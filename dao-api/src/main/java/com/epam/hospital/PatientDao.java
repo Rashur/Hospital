@@ -1,2 +1,5 @@
-package com.epam.hospital;public interface PatientDao {
+package com.epam.hospital;
+
+public interface PatientDao {
+    
 }
