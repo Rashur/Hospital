@@ -1,6 +1,6 @@
 package com.epam.hospital.model;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class Patient {
@@ -12,7 +12,7 @@ public class Patient {
 
     private String diagnosis;
 
-    private Date illnessDate;
+    private LocalDateTime illnessDate;
 
     private Integer nursesId;
 
@@ -48,11 +48,11 @@ public class Patient {
         this.diagnosis = diagnosis;
     }
 
-    public Date getIllnessDate() {
+    public LocalDateTime getIllnessDate() {
         return illnessDate;
     }
 
-    public void setIllnessDate(Date illnessDate) {
+    public void setIllnessDate(LocalDateTime illnessDate) {
         this.illnessDate = illnessDate;
     }
 
