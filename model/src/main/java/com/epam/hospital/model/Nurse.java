@@ -9,6 +9,14 @@ public class Nurse {
 
     private String lastName;
 
+    public Nurse() {
+    }
+
+    public Nurse(String firstName, String lastName) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
+
     public Integer getId() {
         return id;
     }

@@ -1,5 +1,6 @@
 package com.epam.hospital;
 
+import com.epam.hospital.model.Nurse;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,4 +27,27 @@ public class NurseDaoJDBCImplIT {
         assertNotNull(nurseDaoJDBC);
         assertNotNull(nurseDaoJDBC.findAll());
     }
+
+    @Test
+    void create() {
+        assertNotNull(nurseDaoJDBC);
+        int nursesSizeBefore = nurseDaoJDBC.findAll().size();
+        Nurse nurse = new Nurse("Tatsiana", "Levchuk");
+        Integer nurseId = nurseDaoJDBC.create(nurse);
+        assertNotNull(nurseId);
+        assertEquals(nursesSizeBefore, nurseDaoJDBC.findAll().size()-1);
+    }
+
+    /*@Test
+    void delete() {
+        assertNotNull(nurseDaoJDBC);
+        int nurseSizeBefore = nurseDaoJDBC.findAll().size();
+        Integer nurseId = nurseDaoJDBC.delete(1);
+        assertNotNull(nurseId);
+        assertEquals(nurseSizeBefore, nurseDaoJDBC.findAll().size()+1);
+    }
+
+     */
+
+
 }
