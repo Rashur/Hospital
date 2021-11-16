@@ -12,4 +12,7 @@ public interface NurseDao {
     Integer update(Nurse nurse);
 
     Integer delete(Integer nurseId);
+
+    Nurse findById(Integer nurseId);
+
 }

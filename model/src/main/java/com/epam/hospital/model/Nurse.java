@@ -12,7 +12,8 @@ public class Nurse {
     public Nurse() {
     }
 
-    public Nurse(String firstName, String lastName) {
+    public Nurse(Integer id, String firstName, String lastName) {
+        this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
     }
