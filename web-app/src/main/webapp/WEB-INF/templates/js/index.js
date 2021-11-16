@@ -1,7 +1,7 @@
 function relocatePatients(){
-    location.href = "../html/patients.html"
+    location.href = "/patients"
 }
 
 function relocateNurses() {
-    location.href = "../html/nurses.html"
+    location.href = "/nurses"
 }

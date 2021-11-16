@@ -8,20 +8,20 @@ import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 
+import org.springframework.jdbc.datasource.DriverManagerDataSource;
+
 import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class NurseDaoJDBCImpl implements NurseDao{
 
-    private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+    private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
-    private final String SQL_ALL_NURSES = "SELECT * FROM NURSE";
-    private final String SQL_CREATE_NURSE = "INSERT INTO NURSE(first_name,last_name) values(:first_name,:last_name)";
-    private final String SQL_DELETE_NURSE = "DELETE FROM NURSE WHERE ID=:ID";
+    private static final String SQL_ALL_NURSES = "SELECT * FROM NURSE";
+    private static final String SQL_CREATE_NURSE = "INSERT INTO NURSE(first_name,last_name) values(:first_name,:last_name)";
+    private static final String SQL_DELETE_NURSE = "DELETE FROM NURSE WHERE ID=:ID";
 
     public NurseDaoJDBCImpl(DataSource dataSource) {
         this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
