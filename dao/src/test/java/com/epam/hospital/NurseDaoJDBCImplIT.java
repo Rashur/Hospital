@@ -27,6 +27,7 @@ public class NurseDaoJDBCImplIT {
 
     @Test
     void findAll() {
+        log.info("Execute nurseDao test findAll()");
         assertNotNull(nurseDaoJDBC);
         assertNotNull(nurseDaoJDBC.findAll());
     }
@@ -51,6 +52,7 @@ public class NurseDaoJDBCImplIT {
 
     @Test
     void update() {
+        log.info("Execute nurseDao test update()");
         assertNotNull(nurseDaoJDBC);
         Nurse foundNurse = nurseDaoJDBC.findById(1);
         Nurse nurse = new Nurse(1,"Ekaterina", "Ivanova");
@@ -66,6 +68,7 @@ public class NurseDaoJDBCImplIT {
         Integer nurseId = nurseDaoJDBC.delete(1);
         assertNotNull(nurseId);
         assertEquals(nurseSizeBefore, nurseDaoJDBC.findAll().size()+1);
+        //TODO realize test with join table patient
     }
 
      */

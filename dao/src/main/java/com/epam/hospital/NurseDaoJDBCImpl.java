@@ -64,6 +64,7 @@ public class NurseDaoJDBCImpl implements NurseDao{
         SqlParameterSource sqlParameterSource = new MapSqlParameterSource()
                 .addValue("id", nurseId);
         namedParameterJdbcTemplate.update(SQL_DELETE_NURSE, sqlParameterSource);
+        //TODO realize patientDao and delete with join
         log.info("IN delete() delete nurse with id: {}", nurseId);
         return nurseId;
     }
