@@ -6,11 +6,11 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import javax.sql.DataSource;
 import java.util.List;
 
-public class PatientDaoJDBCIml implements PatientDao{
+public class PatientDaoJDBCImpl implements PatientDao{
 
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
-    public PatientDaoJDBCIml(DataSource dataSource) {
+    public PatientDaoJDBCImpl(DataSource dataSource) {
         this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
     }
 
