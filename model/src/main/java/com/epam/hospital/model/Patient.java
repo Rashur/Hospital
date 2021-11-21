@@ -1,5 +1,6 @@
 package com.epam.hospital.model;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -9,8 +10,20 @@ public class Patient {
     private String firstName;
     private String lastName;
     private String diagnosis;
-    private LocalDateTime illnessDate;
+    private LocalDate illnessDate;
     private Integer nursesId;
+
+    public Patient() {
+    }
+
+    public Patient(Integer id, String firstName, String lastName, String diagnosis, LocalDate illnessDate, Integer nursesId) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.diagnosis = diagnosis;
+        this.illnessDate = illnessDate;
+        this.nursesId = nursesId;
+    }
 
     public Integer getId() {
         return id;
@@ -44,11 +57,11 @@ public class Patient {
         this.diagnosis = diagnosis;
     }
 
-    public LocalDateTime getIllnessDate() {
+    public LocalDate getIllnessDate() {
         return illnessDate;
     }
 
-    public void setIllnessDate(LocalDateTime illnessDate) {
+    public void setIllnessDate(LocalDate illnessDate) {
         this.illnessDate = illnessDate;
     }
 
@@ -71,5 +84,17 @@ public class Patient {
     @Override
     public int hashCode() {
         return Objects.hash(id, firstName, lastName, diagnosis, illnessDate, nursesId);
+    }
+
+    @Override
+    public String toString() {
+        return "Patient{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", diagnosis='" + diagnosis + '\'' +
+                ", illnessDate=" + illnessDate +
+                ", nursesId=" + nursesId +
+                '}';
     }
 }

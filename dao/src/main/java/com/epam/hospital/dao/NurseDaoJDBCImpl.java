@@ -34,7 +34,7 @@ public class NurseDaoJDBCImpl implements NurseDao {
 
     @Override
     public List<Nurse> findAll() {
-        log.info("IN findAll()");
+        log.info("IN NurseDaoJDBCImpl findAll()");
         return namedParameterJdbcTemplate.query(SQL_ALL_NURSES, nurseRowMapper);
     }
 
@@ -45,7 +45,7 @@ public class NurseDaoJDBCImpl implements NurseDao {
                 .addValue("lastName", nurse.getLastName());
         KeyHolder keyHolder = new GeneratedKeyHolder();
         namedParameterJdbcTemplate.update(SQL_CREATE_NURSE, sqlParameterSource, keyHolder);
-        log.info("IN create() create nurse:{}", nurse);
+        log.info("IN NurseDaoJDBCImpl create() create nurse:{}", nurse);
         return (Integer) keyHolder.getKey();
     }
 
@@ -57,7 +57,7 @@ public class NurseDaoJDBCImpl implements NurseDao {
                 .addValue("id", nurse.getId());
         KeyHolder keyHolder = new GeneratedKeyHolder();
         namedParameterJdbcTemplate.update(SQL_UPDATE_NURSE, sqlParameterSource, keyHolder);
-        log.info("IN update() update nurse: {} with id: {}", nurse, nurse.getId());
+        log.info("IN NurseDaoJDBCImpl update() update nurse: {} with id: {}", nurse, nurse.getId());
         return (Integer) keyHolder.getKey();
     }
 
@@ -67,7 +67,7 @@ public class NurseDaoJDBCImpl implements NurseDao {
                 .addValue("id", nurseId);
         namedParameterJdbcTemplate.update(SQL_DELETE_NURSE, sqlParameterSource);
         //TODO realize patientDao and delete with join
-        log.info("IN delete() delete nurse with id: {}", nurseId);
+        log.info("IN NurseDaoJDBCImpl delete() delete nurse with id: {}", nurseId);
         return nurseId;
     }
 
@@ -76,7 +76,7 @@ public class NurseDaoJDBCImpl implements NurseDao {
         SqlParameterSource sqlParameterSource = new MapSqlParameterSource()
                 .addValue("id", nurseId);
         Nurse nurse = namedParameterJdbcTemplate.queryForObject(SQL_FIND_NURSE_BY_ID, sqlParameterSource, nurseRowMapper);
-        log.info("IN findById() find nurse {} with id: {}",nurse, nurseId);
+        log.info("IN NurseDaoJDBCImpl findById() find nurse {} with id: {}",nurse, nurseId);
         return Optional.ofNullable(nurse);
     }
 }
