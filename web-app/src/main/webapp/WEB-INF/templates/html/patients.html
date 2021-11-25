@@ -51,6 +51,8 @@
                         <th scope="col">Lastname</th>
                         <th scope="col">Diagnosis</th>
                         <th scope="col">Illness Date</th>
+                        <th scope="col">Nurse</th>
+                        <th scope="col"></th>
                     </tr>
                     </thead>
                     <tbody>
@@ -59,22 +61,42 @@
                         <td th:text="${patient.getLastName}">Otto</td>
                         <td th:text="${patient.getDiagnosis}"></td>
                         <td th:text="${patient.getIllnessDate}"></td>
-<!--                        <td class="text-end">-->
-<!--                            <a class="btn-sm btn-primary text-decoration-none"-->
-<!--                               href="nurse.html"-->
-<!--                               th:href="@{|/nurse/${nurse.id}|}"-->
-<!--                               title="Edit nurse">-->
-<!--                                <i class="bi-pen"></i><span class="d-none d-md-inline">&nbsp;Edit</span></a>-->
-<!--                            <span data-bs-toggle="modal" data-bs-target="#deleteDialog"-->
-<!--                                  th:attr="data-id=${nurse.id},data-name=${nurse.firstName + ' ' + nurse.lastName}">-->
-<!--                                    <a href="#" class="btn-sm btn-danger text-decoration-none"-->
-<!--                                       title="delete nurse"><i class="bi-x"></i><span-->
-<!--                                            class="d-none d-md-inline">&nbsp;Delete</span>-->
-<!--                                    </a>-->
-<!--                        </td>-->
+                        <td th:text="${patient.getNursesId}"></td>
+                        <td class="text-end">
+                            <a class="btn-sm btn-primary text-decoration-none"
+                               href="patient.html"
+                               th:href="@{|/patient/${patient.id}|}"
+                               title="Edit patient">
+                                <i class="bi-pen"></i><span class="d-none d-md-inline">&nbsp;Edit</span></a>
+                            <span data-bs-toggle="modal" data-bs-target="#deleteDialog"
+                                  th:attr="data-id=${patient.id},data-name=${patient.firstName + ' ' + patient.lastName}">
+                                    <a href="#" class="btn-sm btn-danger text-decoration-none"
+                                       title="delete patient"><i class="bi-x"></i><span
+                                            class="d-none d-md-inline">&nbsp;Delete</span>
+                                    </a>
+                        </td>
                     </tr>
                     </tbody>
                 </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="deleteDialog" tabindex="-1" role="dialog"
+     aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header alert-danger">
+                <h5 class="modal-title" id="exampleModalLabel">Delete patient</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Please confirm delete
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <a id="deleteUrl" href="#" class="btn btn-danger">Delete</a>
             </div>
         </div>
     </div>
@@ -91,5 +113,14 @@
         integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
         crossorigin="anonymous">
 </script>
+
+<script>
+    $('#deleteDialog').on('show.bs.modal', function (event) {
+        const target = $(event.relatedTarget);
+        $(this).find('.modal-body').text('Please confirm delete patient: ' + target.data('name'))
+        document.getElementById('deleteUrl').href = '/patient/' + target.data('id') + '/delete';
+    })
+</script>
+
 </body>
 </html>

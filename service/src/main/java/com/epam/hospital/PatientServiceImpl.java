@@ -20,7 +20,7 @@ public class PatientServiceImpl implements PatientService{
     }
 
     @Override
-    public List<Patient> getAll() {
+    public List<Patient> findAll() {
         log.info("IN PatientServiceImpl getAll()");
         return patientDao.findAll();
     }

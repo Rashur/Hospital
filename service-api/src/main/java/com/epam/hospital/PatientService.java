@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public interface PatientService {
 
-    List<Patient> getAll();
+    List<Patient> findAll();
 
     Integer create(Patient patient);
 
