@@ -70,6 +70,7 @@
                             <div class="form-group mb-3" style="width: 30%">
                                 <label for="nursesId">Nurse</label>
                                 <select class="form-control custom-select" id="nursesId" th:field="*{nursesId}">
+                                    <option th:value="${null}">-</option>
                                     <option th:each="nurse : ${nurses}"
                                             th:value="${nurse.id}"
                                             th:text="${nurse.firstName + ' ' + nurse.lastName}">

@@ -24,7 +24,7 @@ public class NurseDaoJDBCImpl implements NurseDao {
     private static final String SQL_ALL_NURSES = "SELECT * FROM NURSE";
     private static final String SQL_CREATE_NURSE = "INSERT INTO NURSE(first_name,last_name) values(:firstName,:lastName)";
     private static final String SQL_UPDATE_NURSE = "UPDATE NURSE SET first_name = :firstName, last_name = :lastName where id = :id";
-    private static final String SQL_DELETE_NURSE = "DELETE FROM NURSE WHERE id=:id";
+    private static final String SQL_DELETE_NURSE = "UPDATE patient SET nurse_id = NULL where nurse_id = :id; DELETE FROM NURSE WHERE id=:id";
     private static final String SQL_FIND_NURSE_BY_ID = "SELECT * FROM NURSE WHERE id=:id";
 
     public NurseDaoJDBCImpl(final NamedParameterJdbcTemplate namedParameterJdbcTemplate,
