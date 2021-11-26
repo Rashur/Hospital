@@ -2,6 +2,7 @@ package com.epam.hospital.dao;
 
 import com.epam.hospital.NurseDao;
 import com.epam.hospital.model.Nurse;
+import com.epam.hospital.model.Patient;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.Test;
@@ -54,7 +55,7 @@ public class NurseDaoJDBCImplIT {
     }
 
     @Test
-    void findById() {
+    void shouldFindNurseById() {
         log.info("Execute nurseDao test findById()");
         assertNotNull(nurseDaoJDBC);
         Nurse expectedNurse = new Nurse(1, "Eigenia", "Liashuk");
@@ -64,7 +65,7 @@ public class NurseDaoJDBCImplIT {
     }
 
     @Test
-    void update() {
+    void shouldUpdateNurse() {
         log.info("Execute nurseDao test update()");
         assertNotNull(nurseDaoJDBC);
         Nurse expectedNurse = nurseDaoJDBC.findById(1).get();
@@ -76,17 +77,13 @@ public class NurseDaoJDBCImplIT {
         assertEquals(expectedNurse, actualNurse);
     }
 
-    /*@Test
-    void delete() {
+    @Test
+    void shouldDeleteNurse() {
         assertNotNull(nurseDaoJDBC);
-        int nurseSizeBefore = nurseDaoJDBC.findAll().size();
-        Integer nurseId = nurseDaoJDBC.delete(1);
-        assertNotNull(nurseId);
-        assertEquals(nurseSizeBefore, nurseDaoJDBC.findAll().size()+1);
-        //TODO realize test with join table patient
+        Nurse expectedNurse = nurseDaoJDBC.findById(1).get();
+        Integer deletedId = nurseDaoJDBC.delete(expectedNurse.getId());
+        Optional<Nurse> deletedNurse = nurseDaoJDBC.findById(deletedId);
+        assertTrue(deletedNurse.isEmpty());
     }
-
-     */
-
 
 }

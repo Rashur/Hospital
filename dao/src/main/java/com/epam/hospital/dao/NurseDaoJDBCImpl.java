@@ -5,6 +5,7 @@ import com.epam.hospital.mapper.NurseRowMapper;
 import com.epam.hospital.model.Nurse;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
@@ -76,7 +77,12 @@ public class NurseDaoJDBCImpl implements NurseDao {
     public Optional<Nurse> findById(Integer nurseId) {
         SqlParameterSource sqlParameterSource = new MapSqlParameterSource()
                 .addValue("id", nurseId);
-        Nurse nurse = namedParameterJdbcTemplate.queryForObject(SQL_FIND_NURSE_BY_ID, sqlParameterSource, nurseRowMapper);
+        Nurse nurse;
+        try {
+            nurse = namedParameterJdbcTemplate.queryForObject(SQL_FIND_NURSE_BY_ID, sqlParameterSource, nurseRowMapper);
+        } catch (EmptyResultDataAccessException ex) {
+            return Optional.empty();
+        }
         log.info("IN NurseDaoJDBCImpl findById() find nurse {} with id: {}",nurse, nurseId);
         return Optional.ofNullable(nurse);
     }

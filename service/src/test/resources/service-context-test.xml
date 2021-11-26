@@ -8,15 +8,24 @@
         <constructor-arg ref="dataSource"/>
     </bean>
 
+    <bean id="patientRowMapper" class="com.epam.hospital.mapper.PatientRowMapper"/>
     <bean id="nurseRowMapper" class="com.epam.hospital.mapper.NurseRowMapper"/>
 
 
     <bean id="nurseDao" class="com.epam.hospital.dao.NurseDaoJDBCImpl">
         <constructor-arg index="0" ref="namedParameterJdbcTemplate"/>
-
+        <constructor-arg index="1" ref="nurseRowMapper"/>
+    </bean>
+    <bean id="patientDao" class="com.epam.hospital.dao.PatientDaoJDBCImpl">
+        <constructor-arg index="0" ref="namedParameterJdbcTemplate"/>
+        <constructor-arg index="1" ref="patientRowMapper"/>
     </bean>
 
     <bean id="nurseService" class="com.epam.hospital.NurseServiceImpl">
         <constructor-arg name="nurseDao" ref="nurseDao"/>
     </bean>
+    <bean id="patientService" class="com.epam.hospital.PatientServiceImpl">
+        <constructor-arg name="patientDao" ref="patientDao"/>
+    </bean>
+
 </beans>
