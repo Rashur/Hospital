@@ -1,6 +1,6 @@
 package com.epam.hospital;
 
-import com.epam.hospital.model.Nurse;
+import com.epam.hospital.dto.DateRange;
 import com.epam.hospital.model.Patient;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -9,6 +9,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.ModelAndView;
+
+import java.time.LocalDate;
+import java.util.Date;
 
 @Controller
 public class PatientsController {
@@ -17,18 +21,36 @@ public class PatientsController {
 
     private final PatientService patientService;
     private final NurseService nurseService;
+    private final PatientDtoServiceImpl patientDtoService;
 
     public PatientsController(final PatientService patientService,
-                              final NurseService nurseService) {
+                              final NurseService nurseService,
+                              final PatientDtoServiceImpl patientDtoService) {
         this.patientService = patientService;
         this.nurseService = nurseService;
+        this.patientDtoService = patientDtoService;
     }
 
     @GetMapping(value = "/patients")
     public String patientsPage(Model model) {
-        model.addAttribute("patients", patientService.findAll());
+        DateRange dateRange = new DateRange();
+        dateRange.setDateFrom(new Date());
+        dateRange.setDateTo(new Date());
+        model.addAttribute("patients", patientDtoService.findAllPatientsWithNurseName());
+        model.addAttribute("dateRange", dateRange);
         log.info("IN PatientsController patientsPage() go to patients: {}", model);
         return "patients";
+    }
+
+    @PostMapping(value = "/patients/date-range")
+    public ModelAndView findPatientsInDateRange(DateRange dateRange) {
+        ModelAndView modelAndView = new ModelAndView("patients");
+        modelAndView.addObject("patients", patientDtoService.findAllPatientsInRange(dateRange));
+        log.info("IN PatientsController findPatientsInDateRange() date range from {} to {} with patients: {}",
+                dateRange.getDateFrom(),
+                dateRange.getDateTo(),
+                patientDtoService.findAllPatientsInRange(dateRange));
+        return modelAndView;
     }
 
     @GetMapping(value = "/patient")
