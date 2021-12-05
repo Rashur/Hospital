@@ -53,7 +53,7 @@ public class NursesController {
     @GetMapping(value = "/nurse/{id}")
     public String updateNursePage(@PathVariable Integer id, Model model) {
         model.addAttribute("isNew", false)
-                .addAttribute("nurse", nurseService.findById(id));
+                .addAttribute("nurse", nurseService.findById(id).get());
         log.info("IN NursesController updateNursePage() go to update page: {}, with id: {}", model, id);
         return "nurse";
     }
