@@ -1,6 +1,5 @@
 package com.epam.hospital.dao;
 
-import com.epam.hospital.model.Nurse;
 import com.epam.hospital.model.Patient;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

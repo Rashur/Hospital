@@ -21,4 +21,7 @@
         <constructor-arg index="1" ref="patientRowMapper"/>
     </bean>
 
+    <bean id="patientDtoDao" class="com.epam.hospital.dao.PatientDtoDaoImpl">
+        <constructor-arg index="0" ref="namedParameterJdbcTemplate"/>
+    </bean>
 </beans>

@@ -1,0 +1,80 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc.xsd
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <mvc:default-servlet-handler/>
+
+    <mvc:annotation-driven/>
+
+    <context:component-scan base-package="com.epam.hospital*"/>
+
+    <import resource="classpath*:test-db.xml"/>
+
+    <bean id="namedParameterJdbcTemplate" class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate">
+        <constructor-arg ref="dataSource"/>
+    </bean>
+
+    <bean id="nurseRowMapper" class="com.epam.hospital.mapper.NurseRowMapper"/>
+    <bean id="patientRowMapper" class="com.epam.hospital.mapper.PatientRowMapper"/>
+
+    <bean id="patientDao" class="com.epam.hospital.dao.PatientDaoJDBCImpl">
+        <constructor-arg index="0" ref="namedParameterJdbcTemplate"/>
+        <constructor-arg index="1" ref="patientRowMapper"/>
+    </bean>
+    <bean id="nurseDao" class="com.epam.hospital.dao.NurseDaoJDBCImpl">
+        <constructor-arg index="0" ref="namedParameterJdbcTemplate"/>
+        <constructor-arg index="1" ref="nurseRowMapper"/>
+    </bean>
+    <bean id="patientDtoDao" class="com.epam.hospital.dao.PatientDtoDaoImpl">
+        <constructor-arg ref="namedParameterJdbcTemplate"/>
+    </bean>
+
+    <bean id="nurseService" class="com.epam.hospital.NurseServiceImpl">
+        <constructor-arg name="nurseDao" ref="nurseDao"/>
+    </bean>
+    <bean id="patientService" class="com.epam.hospital.PatientServiceImpl">
+        <constructor-arg name="patientDao" ref="patientDao"/>
+    </bean>
+    <bean id="patientDtoService" class="com.epam.hospital.PatientDtoServiceImpl">
+        <constructor-arg name="patientDtoDao" ref="patientDtoDao"/>
+    </bean>
+
+    <bean class="org.springframework.context.support.PropertySourcesPlaceholderConfigurer">
+        <property name="locations">
+            <list>
+                <value>classpath*:test-db.properties</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="templateResolver"
+          class="org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver">
+        <property name="prefix" value="/WEB-INF/templates/html/"/>
+        <property name="suffix" value=".html"/>
+        <property name="templateMode" value="HTML"/>
+        <property name="cacheable" value="false"/>
+    </bean>
+
+
+    <bean id="templateEngine"
+          class="org.thymeleaf.spring5.SpringTemplateEngine">
+        <property name="templateResolvers">
+            <set>
+                <ref bean="templateResolver"/>
+            </set>
+        </property>
+    </bean>
+
+    <bean id="viewResolver" class="org.thymeleaf.spring5.view.ThymeleafViewResolver">
+        <property name="templateEngine" ref="templateEngine"/>
+        <property name="characterEncoding" value="UTF-8"/>
+    </bean>
+
+</beans>
