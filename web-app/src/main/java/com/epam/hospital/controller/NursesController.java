@@ -1,11 +1,14 @@
-package com.epam.hospital;
+package com.epam.hospital.controller;
 
+import com.epam.hospital.NurseService;
 import com.epam.hospital.model.Nurse;
+import com.epam.hospital.validators.NurseValidator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,11 +17,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 public class NursesController {
 
     private static final Logger log = LogManager.getLogger(NursesController.class);
+
     private final NurseService nurseService;
+    private final NurseValidator nurseValidator;
 
     @Autowired
-    public NursesController(final NurseService nurseService) {
+    public NursesController(final NurseService nurseService,
+                            final NurseValidator nurseValidator) {
         this.nurseService = nurseService;
+        this.nurseValidator = nurseValidator;
     }
 
     @GetMapping(value = "/nurses")
@@ -37,7 +44,12 @@ public class NursesController {
     }
 
     @PostMapping(value = "/nurse")
-    public String addNurse(Nurse nurse) {
+    public String addNurse(Nurse nurse, BindingResult bindingResult) {
+        nurseValidator.validate(nurse, bindingResult);
+        if (bindingResult.hasErrors()) {
+            return "nurse";
+        }
+
         nurseService.create(nurse);
         log.info("IN NursesController addNurse() add nurse: {}", nurse);
         return "redirect:/nurses";
@@ -59,7 +71,12 @@ public class NursesController {
     }
 
     @PostMapping(value = "/nurse/{id}")
-    public String updateNurse(Nurse nurse) {
+    public String updateNurse(Nurse nurse, BindingResult bindingResult) {
+        nurseValidator.validate(nurse, bindingResult);
+        if (bindingResult.hasErrors()) {
+            return "nurse";
+        }
+
         nurseService.update(nurse);
         log.info("IN NursesController updateNurse() update nurse: {}", nurse);
         return "redirect:/nurses";

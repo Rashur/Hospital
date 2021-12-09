@@ -1,11 +1,17 @@
-package com.epam.hospital;
+package com.epam.hospital.controller;
 
+import com.epam.hospital.NurseService;
+import com.epam.hospital.PatientDtoService;
+import com.epam.hospital.PatientDtoServiceImpl;
+import com.epam.hospital.PatientService;
 import com.epam.hospital.dto.DateRange;
 import com.epam.hospital.model.Patient;
+import com.epam.hospital.validators.PatientValidator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,14 +26,17 @@ public class PatientsController {
 
     private final PatientService patientService;
     private final NurseService nurseService;
-    private final PatientDtoServiceImpl patientDtoService;
+    private final PatientDtoService patientDtoService;
+    private final PatientValidator patientValidator;
 
     public PatientsController(final PatientService patientService,
                               final NurseService nurseService,
-                              final PatientDtoServiceImpl patientDtoService) {
+                              final PatientDtoServiceImpl patientDtoService,
+                              final PatientValidator patientValidator) {
         this.patientService = patientService;
         this.nurseService = nurseService;
         this.patientDtoService = patientDtoService;
+        this.patientValidator = patientValidator;
     }
 
     @GetMapping(value = "/patients")
@@ -62,7 +71,12 @@ public class PatientsController {
     }
 
     @PostMapping(value = "/patient")
-    public String addPatient(Patient patient) {
+    public String addPatient(Patient patient, BindingResult bindingResult) {
+        patientValidator.validate(patient, bindingResult);
+        if (bindingResult.hasErrors()) {
+            return "patient";
+        }
+
         patientService.create(patient);
         log.info("IN PatientsController addPatient() add patient: {}", patient);
         return "redirect:/patients";
@@ -78,7 +92,12 @@ public class PatientsController {
     }
 
     @PostMapping(value = "/patient/{id}")
-    public String updatePatient(Patient patient) {
+    public String updatePatient(Patient patient, BindingResult bindingResult) {
+        patientValidator.validate(patient, bindingResult);
+        if (bindingResult.hasErrors()) {
+            return "patient";
+        }
+
         patientService.update(patient);
         log.info("IN PatientsController updatePatient() update patient: {}", patient);
         return "redirect:/patients";
