@@ -71,15 +71,15 @@ public class PatientsController {
     }
 
     @PostMapping(value = "/patient")
-    public String addPatient(Patient patient, BindingResult bindingResult) {
+    public ModelAndView addPatient(Patient patient, BindingResult bindingResult) {
         patientValidator.validate(patient, bindingResult);
         if (bindingResult.hasErrors()) {
-            return "patient";
+            return new ModelAndView("patient").addObject("nurses", nurseService.findAll());
         }
 
         patientService.create(patient);
         log.info("IN PatientsController addPatient() add patient: {}", patient);
-        return "redirect:/patients";
+        return new ModelAndView("redirect:/patients");
     }
 
     @GetMapping(value = "/patient/{id}")
@@ -92,15 +92,15 @@ public class PatientsController {
     }
 
     @PostMapping(value = "/patient/{id}")
-    public String updatePatient(Patient patient, BindingResult bindingResult) {
+    public ModelAndView updatePatient(Patient patient, BindingResult bindingResult) {
         patientValidator.validate(patient, bindingResult);
         if (bindingResult.hasErrors()) {
-            return "patient";
+            return new ModelAndView("patient").addObject("nurses", nurseService.findAll());
         }
 
         patientService.update(patient);
         log.info("IN PatientsController updatePatient() update patient: {}", patient);
-        return "redirect:/patients";
+        return new ModelAndView("redirect:/patients");
     }
 
     @GetMapping(value = "/patient/{id}/delete")
