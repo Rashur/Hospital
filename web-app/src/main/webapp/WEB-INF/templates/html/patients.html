@@ -159,8 +159,8 @@
 
     $dateRange.daterangepicker();
     $dateRange.on('apply.daterangepicker', function (ev, picker) {
-        $('input[name="dateFrom"]').val(picker.startDate.format('YYYY/MM/DD'));
-        $('input[name="dateTo"]').val(picker.endDate.format('YYYY/MM/DD'));
+        $('input[name="dateFrom"]').val(picker.startDate.format('YYYY-MM-DD'));
+        $('input[name="dateTo"]').val(picker.endDate.format('YYYY-MM-DD'));
     });
 </script>
 

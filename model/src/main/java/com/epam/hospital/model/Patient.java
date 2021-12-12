@@ -1,7 +1,9 @@
 package com.epam.hospital.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class Patient {
@@ -10,6 +12,8 @@ public class Patient {
     private String firstName;
     private String lastName;
     private String diagnosis;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate illnessDate;
     private Integer nursesId;
 

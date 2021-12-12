@@ -1,5 +1,8 @@
 package com.epam.hospital.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.time.LocalDate;
 import java.util.Objects;
 
@@ -9,6 +12,8 @@ public class PatientDto {
     private String firstName;
     private String lastName;
     private String diagnosis;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate illnessDate;
     private String nurseFirstName;
     private String nurseLastName;
