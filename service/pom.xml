@@ -5,10 +5,10 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-            <groupId>com.epam.hospital</groupId>
-            <artifactId>hospital</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </parent>
+        <groupId>com.epam.hospital</groupId>
+        <artifactId>hospital</artifactId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
 
     <artifactId>service</artifactId>
 
@@ -18,68 +18,42 @@
     </properties>
 
     <dependencies>
-            <dependency>
-                <groupId>com.epam.hospital</groupId>
-                <artifactId>model</artifactId>
-            </dependency>
-            <dependency>
-                <groupId>com.epam.hospital</groupId>
-                <artifactId>dao-api</artifactId>
-            </dependency>
-            <dependency>
-                <groupId>com.epam.hospital</groupId>
-                <artifactId>dao</artifactId>
-            </dependency>
-            <dependency>
-                <groupId>com.epam.hospital</groupId>
-                <artifactId>service-api</artifactId>
-            </dependency>
-            <dependency>
-                <groupId>com.epam.hospital</groupId>
-                <artifactId>test-db</artifactId>
-            </dependency>
+        <dependency>
+            <groupId>com.epam.hospital</groupId>
+            <artifactId>model</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.epam.hospital</groupId>
+            <artifactId>dao-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.epam.hospital</groupId>
+            <artifactId>dao</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.epam.hospital</groupId>
+            <artifactId>service-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.epam.hospital</groupId>
+            <artifactId>test-db</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+        </dependency>
 
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-tx</artifactId>
-            </dependency>
-
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-test</artifactId>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.logging.log4j</groupId>
-                <artifactId>log4j-api</artifactId>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.logging.log4j</groupId>
-                <artifactId>log4j-core</artifactId>
-            </dependency>
-            <dependency>
-                <groupId>org.junit.jupiter</groupId>
-                <artifactId>junit-jupiter-api</artifactId>
-            </dependency>
-            <dependency>
-                <groupId>org.junit.jupiter</groupId>
-                <artifactId>junit-jupiter-engine</artifactId>
-            </dependency>
-            <dependency>
-                <groupId>org.junit.platform</groupId>
-                <artifactId>junit-platform-launcher</artifactId>
-            </dependency>
-            <dependency>
-                <groupId>org.junit.platform</groupId>
-                <artifactId>junit-platform-engine</artifactId>
-            </dependency>
-            <dependency>
-                <groupId>org.junit.platform</groupId>
-                <artifactId>junit-platform-commons</artifactId>
-            </dependency>
-
-            <dependency>
-                <groupId>com.h2database</groupId>
-                <artifactId>h2</artifactId>
-            </dependency>
-        </dependencies>
+        <dependency>
+            <groupId>org.junit.platform</groupId>
+            <artifactId>junit-platform-launcher</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.platform</groupId>
+            <artifactId>junit-platform-engine</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.platform</groupId>
+            <artifactId>junit-platform-commons</artifactId>
+        </dependency>
+    </dependencies>
 </project>
