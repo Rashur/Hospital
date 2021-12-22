@@ -2,7 +2,6 @@ package com.epam.hospital.controller;
 
 import com.epam.hospital.NurseService;
 import com.epam.hospital.PatientDtoService;
-import com.epam.hospital.PatientDtoServiceImpl;
 import com.epam.hospital.PatientService;
 import com.epam.hospital.dto.DateRange;
 import com.epam.hospital.model.Patient;
@@ -31,7 +30,7 @@ public class PatientsController {
 
     public PatientsController(final PatientService patientService,
                               final NurseService nurseService,
-                              final PatientDtoServiceImpl patientDtoService,
+                              final PatientDtoService patientDtoService,
                               final PatientValidator patientValidator) {
         this.patientService = patientService;
         this.nurseService = nurseService;

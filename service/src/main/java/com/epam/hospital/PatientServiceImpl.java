@@ -3,6 +3,7 @@ package com.epam.hospital;
 import com.epam.hospital.model.Patient;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -15,6 +16,7 @@ public class PatientServiceImpl implements PatientService{
     private static final Logger log = LogManager.getLogger(PatientServiceImpl.class);
     private final PatientDao patientDao;
 
+    @Autowired
     public PatientServiceImpl(final PatientDao patientDao) {
         this.patientDao = patientDao;
     }

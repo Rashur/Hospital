@@ -15,6 +15,7 @@ public class NurseServiceImpl implements NurseService {
     private final NurseDao nurseDao;
     private static final Logger log = LogManager.getLogger(NurseServiceImpl.class);
 
+    @Autowired
     public NurseServiceImpl(final NurseDao nurseDao) {
         this.nurseDao = nurseDao;
     }

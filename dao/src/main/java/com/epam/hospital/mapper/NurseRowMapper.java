@@ -2,10 +2,12 @@ package com.epam.hospital.mapper;
 
 import com.epam.hospital.model.Nurse;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Component;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+@Component
 public class NurseRowMapper implements RowMapper<Nurse> {
 
     @Override

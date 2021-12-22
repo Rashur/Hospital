@@ -16,8 +16,8 @@
 
     <dependencies>
         <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-context</artifactId>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-json</artifactId>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.datatype</groupId>

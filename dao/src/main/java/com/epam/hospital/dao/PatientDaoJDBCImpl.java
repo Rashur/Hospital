@@ -6,7 +6,6 @@ import com.epam.hospital.model.Patient;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -18,6 +17,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Optional;
 
+@Repository
 public class PatientDaoJDBCImpl implements PatientDao {
 
     private static final Logger log = LogManager.getLogger(PatientDaoJDBCImpl.class);
@@ -32,6 +32,7 @@ public class PatientDaoJDBCImpl implements PatientDao {
     private static final String SQL_DELETE_PATIENT = "DELETE FROM patient WHERE id=:id";
     private static final String SQL_FIND_PATIENT_BY_ID = "SELECT * FROM patient WHERE id=:id";
 
+    @Autowired
     public PatientDaoJDBCImpl(final NamedParameterJdbcTemplate namedParameterJdbcTemplate,
                               final PatientRowMapper patientRowMapper) {
         this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
