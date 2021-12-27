@@ -12,27 +12,27 @@ import org.springframework.context.annotation.Bean;
 public class DaoTestConfig extends SpringJdbcConfig {
 
     @Bean
-    PatientDtoDao patientDtoDao() {
+    public PatientDtoDao patientDtoDao() {
         return new PatientDtoDaoImpl(namedParameterJdbcTemplate());
     }
 
     @Bean
-    PatientRowMapper patientRowMapper() {
+    public PatientRowMapper patientRowMapper() {
         return new PatientRowMapper();
     }
 
     @Bean
-    NurseRowMapper nurseRowMapper() {
+    public NurseRowMapper nurseRowMapper() {
         return new NurseRowMapper();
     }
 
     @Bean
-    PatientDao patientDao()  {
+    public PatientDao patientDao()  {
         return new PatientDaoJDBCImpl(namedParameterJdbcTemplate(), patientRowMapper());
     }
 
     @Bean
-    NurseDao nurseDao() {
+    public NurseDao nurseDao() {
         return new NurseDaoJDBCImpl(namedParameterJdbcTemplate(), nurseRowMapper());
     }
 }
