@@ -31,7 +31,6 @@ import static org.springframework.test.web.client.match.MockRestRequestMatchers.
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withStatus;
 
 @SpringBootTest
-@Disabled
 class NursesControllerIT {
 
     private static final String NURSES_URL = "http://localhost:8088/nurses";
