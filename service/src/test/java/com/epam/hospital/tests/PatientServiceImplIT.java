@@ -6,6 +6,7 @@ import com.epam.hospital.ServiceTestConfig;
 import com.epam.hospital.model.Patient;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.context.transaction.BeforeTransaction;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
@@ -29,6 +31,11 @@ class PatientServiceImplIT {
     private static final Logger log = LogManager.getLogger(PatientServiceImplIT.class);
 
     private final PatientService patientService;
+
+    @BeforeEach
+    private void setUp() {
+
+    }
 
     @Autowired
     PatientServiceImplIT(final PatientService patientService) {
@@ -87,7 +94,7 @@ class PatientServiceImplIT {
     void shouldFindPatientById() {
         log.info("Execute test PatientDaoJDBCImplIT shouldFindPatientById()");
         assertNotNull(patientService);
-        Patient expectedPatient = new Patient(1, "Dzianis", "Berastsen", "Skalioz", LocalDate.of(2021, 10, 1), 2 );
+        Patient expectedPatient = new Patient(1, "Dzianis", "Berastsen", "Skalioz", LocalDate.of(2021, 10, 1), 2);
         Optional<Patient> actualPatient = patientService.findById(1);
         assertTrue(actualPatient.isPresent());
         assertEquals(expectedPatient, actualPatient.get());
