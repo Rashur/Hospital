@@ -1,6 +1,6 @@
 # Hospital
 
-'@author Dzianis Berastsen'
+`@author Dzianis Berastsen`
 
 This is multi-module project with **Maven** which has 9 modules:<br/>
 * model
