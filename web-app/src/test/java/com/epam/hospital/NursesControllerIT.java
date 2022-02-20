@@ -98,7 +98,7 @@ class NursesControllerIT {
                 .contentType(MediaType.APPLICATION_JSON)
                 .body("1"));
 
-        Nurse savingNurse = new Nurse(4,"Anastasia", "Ivanova");
+        Nurse savingNurse = new Nurse();
         mockMvc.perform(
                 MockMvcRequestBuilders.post("/nurse")
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
@@ -131,7 +131,7 @@ class NursesControllerIT {
 
     @Test
     void updateNursePage() throws Exception {
-        Nurse nurse = new Nurse(1, "Eigenia", "Liashuk");
+        Nurse nurse = new Nurse();
 
         mockServer.expect(ExpectedCount.once(), requestTo(new URI(NURSES_URL + "/" + nurse.getId())))
                 .andExpect(method(HttpMethod.GET))

@@ -90,11 +90,8 @@ class PatientDtoServiceRestTest {
 //
 //        assertNotNull(patientDtoList);
     }
-
+    //TODO refactor PatientDto generator
     private PatientDto create(Integer index) {
-        return new PatientDto(index, "firstName" + index, "lastName" + index,
-                "diagnosis" + index,
-                LocalDate.of(2021, 10, 1),
-                "nurseFirstName" + index, "nurseLastName" + index);
+        return new PatientDto();
     }
 }

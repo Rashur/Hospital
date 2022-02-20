@@ -1,6 +1,7 @@
 package com.epam.hospital.controller;
 
 import com.epam.hospital.NurseService;
+import com.epam.hospital.dto.NurseDto;
 import com.epam.hospital.model.Nurse;
 import com.epam.hospital.validators.NurseValidator;
 import org.apache.logging.log4j.LogManager;
@@ -13,6 +14,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.Optional;
 
@@ -47,21 +49,21 @@ public class NursesController {
     }
 
     @PostMapping(value = "/nurse")
-    public String addNurse(Nurse nurse, BindingResult bindingResult) {
-        nurseValidator.validate(nurse, bindingResult);
+    public String addNurse(NurseDto nurseDto, BindingResult bindingResult) {
+        nurseValidator.validate(nurseDto, bindingResult);
         if (bindingResult.hasErrors()) {
             return "nurse";
         }
 
-        nurseService.create(nurse);
-        log.info("IN NursesController addNurse() add nurse: {}", nurse);
+        nurseService.create(nurseDto);
+        log.info("IN NursesController addNurse() add nurse: {}", nurseDto);
         return "redirect:/nurses";
     }
 
-    @GetMapping(value = "/nurse/{id}/delete")
-    public String deleteNurse(@PathVariable Integer id) {
-        nurseService.delete(id);
-        log.info("IN NursesController deleteNurse() delete nurse with id: {}", id);
+    @GetMapping(value = "/nurse/delete")
+    public String deleteNurse(@RequestBody NurseDto nurseDto) {
+        nurseService.delete(nurseDto);
+        log.info("IN NursesController deleteNurse() delete nurse: {}", nurseDto);
         return "redirect:/nurses";
     }
 
@@ -74,14 +76,14 @@ public class NursesController {
     }
 
     @PostMapping(value = "/nurse/{id}")
-    public String updateNurse(Nurse nurse, BindingResult bindingResult) {
-        nurseValidator.validate(nurse, bindingResult);
+    public String updateNurse(NurseDto nurseDto, BindingResult bindingResult) {
+        nurseValidator.validate(nurseDto, bindingResult);
         if (bindingResult.hasErrors()) {
             return "nurse";
         }
 
-        nurseService.update(nurse);
-        log.info("IN NursesController updateNurse() update nurse: {}", nurse);
+        nurseService.update(nurseDto);
+        log.info("IN NursesController updateNurse() update nurse: {}", nurseDto);
         return "redirect:/nurses";
     }
 }

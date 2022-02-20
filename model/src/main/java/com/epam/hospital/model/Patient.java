@@ -2,104 +2,45 @@ package com.epam.hospital.model;
 
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.Objects;
+import java.util.List;
 
+@Entity
+@Table(name = "patient")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Patient {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
+    @Column(name = "first_name")
     private String firstName;
+    @Column(name = "last_name")
     private String lastName;
+    @Column(name = "diagnosis")
     private String diagnosis;
+
+    @Column(name = "illness_date")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate illnessDate;
-    private Integer nursesId;
 
-    public Patient() {
-    }
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)
+    @JoinTable(name = "nurse_patient",
+            joinColumns = {@JoinColumn(name = "patient_id", referencedColumnName = "id")},
+            inverseJoinColumns = {@JoinColumn(name = "nurse_id", referencedColumnName = "id")})
+    private List<Nurse> nurseList;
 
-    public Patient(Integer id, String firstName, String lastName, String diagnosis, LocalDate illnessDate, Integer nursesId) {
-        this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.diagnosis = diagnosis;
-        this.illnessDate = illnessDate;
-        this.nursesId = nursesId;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public String getDiagnosis() {
-        return diagnosis;
-    }
-
-    public void setDiagnosis(String diagnosis) {
-        this.diagnosis = diagnosis;
-    }
-
-    public LocalDate getIllnessDate() {
-        return illnessDate;
-    }
-
-    public void setIllnessDate(LocalDate illnessDate) {
-        this.illnessDate = illnessDate;
-    }
-
-    public Integer getNursesId() {
-        return nursesId;
-    }
-
-    public void setNursesId(Integer nursesId) {
-        this.nursesId = nursesId;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Patient patient = (Patient) o;
-        return Objects.equals(id, patient.id) && Objects.equals(firstName, patient.firstName) && Objects.equals(lastName, patient.lastName) && Objects.equals(diagnosis, patient.diagnosis) && Objects.equals(illnessDate, patient.illnessDate) && Objects.equals(nursesId, patient.nursesId);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, firstName, lastName, diagnosis, illnessDate, nursesId);
-    }
-
-    @Override
-    public String toString() {
-        return "Patient{" +
-                "id=" + id +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", diagnosis='" + diagnosis + '\'' +
-                ", illnessDate=" + illnessDate +
-                ", nursesId=" + nursesId +
-                '}';
-    }
 }

@@ -1,5 +1,6 @@
 package com.epam.hospital;
 
+import com.epam.hospital.dto.PatientDto;
 import com.epam.hospital.model.Patient;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -30,50 +31,41 @@ public class PatientServiceRest implements PatientService{
 
 
     @Override
-    public List<Patient> findAll() {
+    public List<PatientDto> findAll() {
         log.info("IN PatientServiceRest findAll() find all patients");
         ResponseEntity responseEntity = restTemplate.getForEntity(url, List.class);
-        return (List<Patient>) responseEntity.getBody();
+        return (List<PatientDto>) responseEntity.getBody();
     }
 
     @Override
-    public Integer create(Patient patient) {
-        log.info("IN PatientServiceRest create() create patient: {}", patient);
-        ResponseEntity responseEntity = restTemplate.postForEntity(url, patient, Integer.class);
-        return (Integer) responseEntity.getBody();
+    public void create(PatientDto patientDto) {
+        log.info("IN PatientServiceRest create() create patient: {}", patientDto);
+        restTemplate.postForEntity(url, patientDto, Integer.class);
     }
 
     @Override
-    public Integer update(Patient patient) {
-        log.info("IN PatientServiceRest update() update patient: {}", patient);
+    public void update(PatientDto patientDto) {
+        log.info("IN PatientServiceRest update() update patient: {}", patientDto);
         HttpHeaders headers = new HttpHeaders();
         headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
-        HttpEntity<Patient> entity = new HttpEntity<>(patient, headers);
-        ResponseEntity<Integer> responseEntity = restTemplate.exchange(url,
-                HttpMethod.PUT,
-                entity,
-                Integer.class);
-        return responseEntity.getBody();
+        HttpEntity<PatientDto> entity = new HttpEntity<>(patientDto, headers);
+        restTemplate.exchange(url, HttpMethod.PUT, entity, Integer.class);
     }
 
     @Override
-    public Integer delete(Integer patientId) {
-        log.info("IN PatientServiceRest delete() delete patient with id: {}", patientId);
+    public void delete(PatientDto patientDto) {
+        log.info("IN PatientServiceRest delete() delete patient: {}", patientDto);
         HttpHeaders headers = new HttpHeaders();
         headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
-        HttpEntity<Patient> entity = new HttpEntity<>(headers);
-        ResponseEntity<Integer> responseEntity = restTemplate.exchange(url + "/" + patientId,
-                HttpMethod.DELETE,
-                entity,
-                Integer.class);
-        return responseEntity.getBody();
+        HttpEntity<PatientDto> entity = new HttpEntity<>(patientDto, headers);
+        restTemplate.exchange(url, HttpMethod.DELETE, entity, Integer.class);
     }
 
     @Override
-    public Optional<Patient> findById(Integer patientId) {
+    public Optional<PatientDto> findById(Integer patientId) {
         log.info("IN PatientServiceRest findById() find patient with id: {}", patientId);
-        ResponseEntity<Patient> responseEntity = restTemplate.getForEntity(url + "/" + patientId, Patient.class);
-        Patient patient = responseEntity.getBody();
-        return Optional.ofNullable(patient);
+        ResponseEntity<PatientDto> responseEntity = restTemplate.getForEntity(url + "/" + patientId, PatientDto.class);
+        PatientDto patientDto = responseEntity.getBody();
+        return Optional.ofNullable(patientDto);
     }
 }

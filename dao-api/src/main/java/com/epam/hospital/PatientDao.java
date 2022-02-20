@@ -2,18 +2,18 @@ package com.epam.hospital;
 
 import com.epam.hospital.model.Patient;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import java.util.List;
 import java.util.Optional;
 
-//TODO can be extended from generic crudDao
 public interface PatientDao {
     List<Patient> findAll();
 
-    Integer create(Patient patient);
+    void create(Patient patient);
 
-    Integer update(Patient patient);
+    void update(Patient patient);
 
-    Integer delete(Integer patientId);
+    void delete(Patient patient);
 
     Optional<Patient> findById(Integer patientId);
 }

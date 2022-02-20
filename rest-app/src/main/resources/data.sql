@@ -11,11 +11,11 @@ VALUES (3, 'Vladislav', 'Ivanov', 'xzc', '2021-01-29');
 INSERT INTO patient(ID, FIRST_NAME, LAST_NAME, DIAGNOSIS, ILLNESS_DATE)
 VALUES (4, 'Valeriy', 'Sergeev', 'sdfg', '2021-05-15');
 
-INSERT INTO nurses_patient(ID, NURSE_ID, PATIENT_ID)
-VALUES (1, 1, 3);
-INSERT INTO nurses_patient(ID, NURSE_ID, PATIENT_ID)
-VALUES (1, 3, 2);
-INSERT INTO nurses_patient(ID, NURSE_ID, PATIENT_ID)
-VALUES (1, 2, 3);
-INSERT INTO nurses_patient(ID, NURSE_ID, PATIENT_ID)
-VALUES (1, 2, 4)
+INSERT INTO nurse_patient(NURSE_ID, PATIENT_ID)
+VALUES (1, 3);
+INSERT INTO nurse_patient(NURSE_ID, PATIENT_ID)
+VALUES (3, 2);
+INSERT INTO nurse_patient(NURSE_ID, PATIENT_ID)
+VALUES (2, 3);
+INSERT INTO nurse_patient(NURSE_ID, PATIENT_ID)
+VALUES (2, 4)

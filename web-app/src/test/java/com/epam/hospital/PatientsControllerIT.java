@@ -64,17 +64,13 @@ class PatientsControllerIT {
     @Test
     void shouldReturnPatientsPage() throws Exception {
         PatientDto patientDto1 = createPatientDto(1, "Dzianis","Berastsen",
-                "Skalioz", LocalDate.of(2021, 10, 1),
-                "Ekaterina", "Kozura");
+                "Skalioz", LocalDate.of(2021, 10, 1));
         PatientDto patientDto2 = createPatientDto(2, "Kirill", "Yrkovski",
-                "qwe", LocalDate.of(2021, 5, 15),
-                "Eigenia", "Liashuk");
+                "qwe", LocalDate.of(2021, 5, 15));
         PatientDto patientDto3 = createPatientDto(3, "Vladislav", "Ivanov",
-                "xzc", LocalDate.of(2021, 1, 29),
-                "Tatsiana", "Rezko");
+                "xzc", LocalDate.of(2021, 1, 29));
         PatientDto patientDto4 = createPatientDto(4, "Valeriy", "Sergeev",
-                "sdfg", LocalDate.of(2021, 5 ,15),
-                "Ekaterina", "Kozura");
+                "sdfg", LocalDate.of(2021, 5 ,15));
 
         mockServer.expect(ExpectedCount.once(), requestTo(new URI(PATIENTS_URL)))
                 .andExpect(MockRestRequestMatchers.method(HttpMethod.GET))
@@ -129,7 +125,7 @@ class PatientsControllerIT {
                         .body("1"));
 
         LocalDate addedDate = LocalDate.now();
-        Patient expectedPatient = new Patient(5, "Yahor", "Krechka", "Slepota", addedDate, 0);
+        Patient expectedPatient = new Patient();
 
         mockMvc.perform(
                 MockMvcRequestBuilders.post("/patient")
@@ -146,8 +142,7 @@ class PatientsControllerIT {
 
     @Test
     void shouldReturnUpdatePatientPage() throws Exception {
-        Patient patient = new Patient(1, "Dzianis","Berastsen",
-                "Skalioz", LocalDate.of(2021, 10, 1), 2);
+        Patient patient = new Patient();
         Nurse nurse1 = createNurse(1, "Eigenia", "Liashuk" );
         Nurse nurse2 = createNurse(2, "Ekaterina", "Kozura" );
         Nurse nurse3 = createNurse(3, "Tatsiana", "Rezko" );
@@ -217,16 +212,13 @@ class PatientsControllerIT {
     }
 
     private PatientDto createPatientDto(int id, String firstName,String lastName,
-                                        String diagnosis, LocalDate illnessDate,
-                                        String nurseFirstName, String nurseLastName) {
+                                        String diagnosis, LocalDate illnessDate) {
         PatientDto patientDto = new PatientDto();
         patientDto.setId(id);
         patientDto.setFirstName(firstName);
         patientDto.setLastName(lastName);
         patientDto.setDiagnosis(diagnosis);
         patientDto.setIllnessDate(illnessDate);
-        patientDto.setNurseFirstName(nurseFirstName);
-        patientDto.setNurseLastName(nurseLastName);
         return patientDto;
     }
 

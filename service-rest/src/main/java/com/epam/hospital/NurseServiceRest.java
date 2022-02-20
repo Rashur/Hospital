@@ -1,5 +1,6 @@
 package com.epam.hospital;
 
+import com.epam.hospital.dto.NurseDto;
 import com.epam.hospital.model.Nurse;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -32,47 +33,41 @@ public class NurseServiceRest implements NurseService {
     }
 
     @Override
-    public List<Nurse> findAll() {
+    public List<NurseDto> findAll() {
         log.info("IN NurseServiceRest findAll() find all nurses");
         ResponseEntity responseEntity = restTemplate.getForEntity(url, List.class);
-        return (List<Nurse>) responseEntity.getBody();
+        return (List<NurseDto>) responseEntity.getBody();
     }
 
     @Override
-    public Integer create(Nurse nurse) {
-        log.info("IN NurseServiceRest create() create nurse: {}", nurse);
-        ResponseEntity responseEntity = restTemplate.postForEntity(url, nurse, Integer.class);
-        return (Integer) responseEntity.getBody();
+    public void create(NurseDto nurseDto) {
+        log.info("IN NurseServiceRest create() create nurse: {}", nurseDto);
+        restTemplate.postForEntity(url, nurseDto, Integer.class);
     }
 
     @Override
-    public Integer update(Nurse nurse) {
-        log.info("IN NurseServiceRest update() update nurse: {}", nurse);
+    public void update(NurseDto nurseDto) {
+        log.info("IN NurseServiceRest update() update nurse: {}", nurseDto);
         HttpHeaders headers = new HttpHeaders();
         headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
-        HttpEntity<Nurse> entity = new HttpEntity<>(nurse, headers);
-        ResponseEntity<Integer> responseEntity = restTemplate.exchange(url, HttpMethod.PUT, entity, Integer.class );
-        return responseEntity.getBody();
+        HttpEntity<NurseDto> entity = new HttpEntity<>(nurseDto, headers);
+        restTemplate.exchange(url, HttpMethod.PUT, entity, Integer.class );
     }
 
     @Override
-    public Integer delete(Integer nurseId) {
-        log.info("IN NurseServiceRest delete() delete nurse with id: {}", nurseId);
+    public void delete(NurseDto nurseDto) {
+        log.info("IN NurseServiceRest delete() delete nurse: {}", nurseDto);
         HttpHeaders headers = new HttpHeaders();
         headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
-        HttpEntity<Nurse> entity = new HttpEntity<>(headers);
-        ResponseEntity<Integer> responseEntity = restTemplate.exchange(url + "/" + nurseId,
-                HttpMethod.DELETE,
-                entity,
-                Integer.class);
-        return responseEntity.getBody();
+        HttpEntity<NurseDto> entity = new HttpEntity<>(nurseDto ,headers);
+        restTemplate.exchange(url, HttpMethod.DELETE, entity, Integer.class);
     }
 
     @Override
-    public Optional<Nurse> findById(Integer nurseId) {
+    public Optional<NurseDto> findById(Integer nurseId) {
         log.info("IN NurseServiceRest findById() find nurse by id: {}", nurseId);
-        ResponseEntity<Nurse> responseEntity = restTemplate.getForEntity(url + "/" + nurseId, Nurse.class);
-        Nurse nurse = responseEntity.getBody();
-        return Optional.ofNullable(nurse);
+        ResponseEntity<NurseDto> responseEntity = restTemplate.getForEntity(url + "/" + nurseId, NurseDto.class);
+        NurseDto nurseDto = responseEntity.getBody();
+        return Optional.ofNullable(nurseDto);
     }
 }

@@ -1,6 +1,7 @@
 package com.epam.hospital.rest;
 
 import com.epam.hospital.NurseService;
+import com.epam.hospital.dto.NurseDto;
 import com.epam.hospital.model.Nurse;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -26,36 +27,36 @@ public class NurseController {
     }
 
     @GetMapping(value = "/nurses")
-    public List<Nurse> allNurses() {
+    public List<NurseDto> allNurses() {
         log.info("IN NurseController allNurses() find all nurses");
         return nurseService.findAll();
     }
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(value = "/nurses", consumes = "application/json", produces = "application/json")
-    public Integer createNurse(@RequestBody Nurse nurse) {
-        log.info("IN NurseController createNurse() create nurse: {}", nurse);
-        return nurseService.create(nurse);
+    public void createNurse(@RequestBody NurseDto nurseDto) {
+        log.info("IN NurseController createNurse() create nurse: {}", nurseDto);
+        nurseService.create(nurseDto);
     }
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping(value = "/nurses/{id}")
-    public Nurse findNurseById(@PathVariable Integer id) {
+    public NurseDto findNurseById(@PathVariable Integer id) {
         log.info("IN NurseController findNurseById() find nurse with id: {}", id);
         return nurseService.findById(id).get();
     }
 
     @ResponseStatus(HttpStatus.OK)
     @PutMapping(value = "/nurses", consumes = {"application/json"}, produces = {"application/json"})
-    public Integer updateNurse(@RequestBody Nurse nurse) {
-        log.info("IN NurseController updateNurse() update nurse: {}", nurse);
-        return nurseService.update(nurse);
+    public void updateNurse(@RequestBody NurseDto nurseDto) {
+        log.info("IN NurseController updateNurse() update nurse: {}", nurseDto);
+        nurseService.update(nurseDto);
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @DeleteMapping(value = "/nurses/{id}", produces = {"application/json"})
-    public Integer deleteNurse(@PathVariable Integer id) {
-        log.info("IN NurseController deleteNurse() delete nurse with id: {}", id);
-        return nurseService.delete(id);
+    @DeleteMapping(value = "/nurses", produces = {"application/json"})
+    public void deleteNurse(@RequestBody NurseDto nurseDto) {
+        log.info("IN NurseController deleteNurse() delete nurse: {}", nurseDto);
+        nurseService.delete(nurseDto);
     }
 }

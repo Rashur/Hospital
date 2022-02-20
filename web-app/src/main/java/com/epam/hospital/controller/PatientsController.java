@@ -4,6 +4,7 @@ import com.epam.hospital.NurseService;
 import com.epam.hospital.PatientDtoService;
 import com.epam.hospital.PatientService;
 import com.epam.hospital.dto.DateRange;
+import com.epam.hospital.dto.PatientDto;
 import com.epam.hospital.model.Patient;
 import com.epam.hospital.validators.PatientValidator;
 import org.apache.logging.log4j.LogManager;
@@ -14,6 +15,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Date;
@@ -70,14 +72,14 @@ public class PatientsController {
     }
 
     @PostMapping(value = "/patient")
-    public ModelAndView addPatient(Patient patient, BindingResult bindingResult) {
-        patientValidator.validate(patient, bindingResult);
+    public ModelAndView addPatient(PatientDto patientDto, BindingResult bindingResult) {
+        patientValidator.validate(patientDto, bindingResult);
         if (bindingResult.hasErrors()) {
             return new ModelAndView("patient").addObject("nurses", nurseService.findAll());
         }
 
-        patientService.create(patient);
-        log.info("IN PatientsController addPatient() add patient: {}", patient);
+        patientService.create(patientDto);
+        log.info("IN PatientsController addPatient() add patient: {}", patientDto);
         return new ModelAndView("redirect:/patients");
     }
 
@@ -91,21 +93,21 @@ public class PatientsController {
     }
 
     @PostMapping(value = "/patient/{id}")
-    public ModelAndView updatePatient(Patient patient, BindingResult bindingResult) {
-        patientValidator.validate(patient, bindingResult);
+    public ModelAndView updatePatient(PatientDto patientDto, BindingResult bindingResult) {
+        patientValidator.validate(patientDto, bindingResult);
         if (bindingResult.hasErrors()) {
             return new ModelAndView("patient").addObject("nurses", nurseService.findAll());
         }
 
-        patientService.update(patient);
-        log.info("IN PatientsController updatePatient() update patient: {}", patient);
+        patientService.update(patientDto);
+        log.info("IN PatientsController updatePatient() update patient: {}", patientDto);
         return new ModelAndView("redirect:/patients");
     }
 
-    @GetMapping(value = "/patient/{id}/delete")
-    public String deletePatient(@PathVariable Integer id) {
-        patientService.delete(id);
-        log.info("IN PatientsController deletePatient() delete patient with id: {}", id);
+    @GetMapping(value = "/patient/delete")
+    public String deletePatient(@RequestBody PatientDto patientDto) {
+        patientService.delete(patientDto);
+        log.info("IN PatientsController deletePatient() delete patient: {}", patientDto);
         return "redirect:/patients";
     }
 }

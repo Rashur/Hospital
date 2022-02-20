@@ -5,15 +5,14 @@ import com.epam.hospital.model.Nurse;
 import java.util.List;
 import java.util.Optional;
 
-//TODO can be extended from generic crudDao
 public interface NurseDao {
     List<Nurse> findAll();
 
-    Integer create(Nurse nurse);
+    void create(Nurse nurse);
 
-    Integer update(Nurse nurse);
+    void update(Nurse nurse);
 
-    Integer delete(Integer nurseId);
+    void delete(Nurse nurse);
 
     Optional<Nurse> findById(Integer nurseId);
 

@@ -1,19 +1,14 @@
 package com.epam.hospital.dao;
 
 import com.epam.hospital.NurseDao;
-import com.epam.hospital.mapper.NurseRowMapper;
 import com.epam.hospital.model.Nurse;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.jdbc.core.namedparam.SqlParameterSource;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.*;
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,71 +17,52 @@ public class NurseDaoJDBCImpl implements NurseDao {
 
     private static final Logger log = LogManager.getLogger(NurseDaoJDBCImpl.class);
 
-    private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
-    private final NurseRowMapper nurseRowMapper;
+    @PersistenceContext
+    private final EntityManager entityManager;
 
-    private static final String SQL_ALL_NURSES = "SELECT * FROM NURSE";
-    private static final String SQL_CREATE_NURSE = "INSERT INTO NURSE(first_name,last_name) values(:firstName,:lastName)";
-    private static final String SQL_UPDATE_NURSE = "UPDATE NURSE SET first_name = :firstName, last_name = :lastName where id = :id";
-    private static final String SQL_DELETE_NURSE = "UPDATE patient SET nurse_id = NULL where nurse_id = :id; DELETE FROM NURSE WHERE id=:id";
-    private static final String SQL_FIND_NURSE_BY_ID = "SELECT * FROM NURSE WHERE id=:id";
+    private static final String SQL_ALL_NURSES = "FROM Nurse";
+    private static final String SQL_FIND_NURSE_BY_ID = "FROM Nurse WHERE id=:id";
 
     @Autowired
-    public NurseDaoJDBCImpl(final NamedParameterJdbcTemplate namedParameterJdbcTemplate,
-                            final NurseRowMapper nurseRowMapper) {
-        this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
-        this.nurseRowMapper = nurseRowMapper;
+    public NurseDaoJDBCImpl(EntityManager entityManager) {
+        this.entityManager = entityManager;
     }
+
 
     @Override
     public List<Nurse> findAll() {
         log.info("IN NurseDaoJDBCImpl findAll()");
-        return namedParameterJdbcTemplate.query(SQL_ALL_NURSES, nurseRowMapper);
+        TypedQuery<Nurse> typedQuery = entityManager.createQuery(SQL_ALL_NURSES, Nurse.class);
+        return typedQuery.getResultList();
     }
 
     @Override
-    public Integer create(Nurse nurse) {
-        SqlParameterSource sqlParameterSource = new MapSqlParameterSource()
-                .addValue("firstName", nurse.getFirstName())
-                .addValue("lastName", nurse.getLastName());
-        KeyHolder keyHolder = new GeneratedKeyHolder();
-        namedParameterJdbcTemplate.update(SQL_CREATE_NURSE, sqlParameterSource, keyHolder);
-        log.info("IN NurseDaoJDBCImpl create() create nurse:{}", nurse);
-        return (Integer) keyHolder.getKey();
+    @Transactional
+    public void create(Nurse nurse) {
+        entityManager.persist(nurse);
     }
 
     @Override
-    public Integer update(Nurse nurse) {
-        SqlParameterSource sqlParameterSource = new MapSqlParameterSource()
-                .addValue("firstName", nurse.getFirstName())
-                .addValue("lastName", nurse.getLastName())
-                .addValue("id", nurse.getId());
-        KeyHolder keyHolder = new GeneratedKeyHolder();
-        namedParameterJdbcTemplate.update(SQL_UPDATE_NURSE, sqlParameterSource, keyHolder);
-        log.info("IN NurseDaoJDBCImpl update() update nurse: {} with id: {}", nurse, nurse.getId());
-        return (Integer) keyHolder.getKey();
+    @Transactional
+    public void update(Nurse nurse) {
+        entityManager.merge(nurse);
     }
 
     @Override
-    public Integer delete(Integer nurseId) {
-        SqlParameterSource sqlParameterSource = new MapSqlParameterSource()
-                .addValue("id", nurseId);
-        namedParameterJdbcTemplate.update(SQL_DELETE_NURSE, sqlParameterSource);
-        log.info("IN NurseDaoJDBCImpl delete() delete nurse with id: {}", nurseId);
-        return nurseId;
+    @Transactional
+    public void delete(Nurse nurse) {
+        entityManager.remove(entityManager.contains(nurse) ? nurse : entityManager.merge(nurse));
     }
 
     @Override
     public Optional<Nurse> findById(Integer nurseId) {
-        SqlParameterSource sqlParameterSource = new MapSqlParameterSource()
-                .addValue("id", nurseId);
-        Nurse nurse;
+        TypedQuery<Nurse> typedQuery = entityManager.createQuery(SQL_FIND_NURSE_BY_ID, Nurse.class);
+        typedQuery.setParameter("id", nurseId);
         try {
-            nurse = namedParameterJdbcTemplate.queryForObject(SQL_FIND_NURSE_BY_ID, sqlParameterSource, nurseRowMapper);
-        } catch (EmptyResultDataAccessException ex) {
+            Nurse nurse = typedQuery.getSingleResult();
+            return Optional.ofNullable(nurse);
+        } catch (NoResultException exception) {
             return Optional.empty();
         }
-        log.info("IN NurseDaoJDBCImpl findById() find nurse {} with id: {}",nurse, nurseId);
-        return Optional.ofNullable(nurse);
     }
 }
