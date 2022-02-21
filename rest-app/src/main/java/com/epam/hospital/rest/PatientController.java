@@ -40,10 +40,11 @@ public class PatientController {
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @PutMapping(value = "/patients", consumes = {"application/json"}, produces = {"application/json"})
-    public void updatePatient(@RequestBody PatientDto patientDto) {
+    @PutMapping(value = "/patients/{id}", consumes = {"application/json"}, produces = {"application/json"})
+    public void updatePatient(@RequestBody PatientDto patientDto,
+                              @PathVariable Integer id) {
         log.info("IN PatientController updatePatient() update patient: {}", patientDto);
-        patientService.update(patientDto);
+        patientService.update(patientDto, id);
     }
 
     @ResponseStatus(HttpStatus.OK)
@@ -54,10 +55,10 @@ public class PatientController {
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @DeleteMapping(value = "/patients", produces = {"application/json"})
-    public void deletePatient(@RequestBody PatientDto patientDto) {
-        log.info("IN PatientController deletePatient() delete patient: {}", patientDto);
-        patientService.delete(patientDto);
+    @DeleteMapping(value = "/patients/{id}", produces = {"application/json"})
+    public void deletePatient(@PathVariable Integer id) {
+        log.info("IN PatientController deletePatient() delete patient with id: {}", id);
+        patientService.delete(id);
     }
 
 //    @ResponseStatus(HttpStatus.OK)

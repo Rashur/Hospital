@@ -24,10 +24,6 @@
         </dependency>
         <dependency>
             <groupId>com.epam.hospital</groupId>
-            <artifactId>dao</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.epam.hospital</groupId>
             <artifactId>service-api</artifactId>
         </dependency>
         <dependency>

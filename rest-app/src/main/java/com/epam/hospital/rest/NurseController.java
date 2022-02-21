@@ -47,16 +47,17 @@ public class NurseController {
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @PutMapping(value = "/nurses", consumes = {"application/json"}, produces = {"application/json"})
-    public void updateNurse(@RequestBody NurseDto nurseDto) {
+    @PutMapping(value = "/nurses/{id}", consumes = {"application/json"}, produces = {"application/json"})
+    public void updateNurse(@RequestBody NurseDto nurseDto,
+                            @PathVariable Integer id) {
         log.info("IN NurseController updateNurse() update nurse: {}", nurseDto);
-        nurseService.update(nurseDto);
+        nurseService.update(nurseDto, id);
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @DeleteMapping(value = "/nurses", produces = {"application/json"})
-    public void deleteNurse(@RequestBody NurseDto nurseDto) {
-        log.info("IN NurseController deleteNurse() delete nurse: {}", nurseDto);
-        nurseService.delete(nurseDto);
+    @DeleteMapping(value = "/nurses/{id}", produces = {"application/json"})
+    public void deleteNurse(@PathVariable Integer id) {
+        log.info("IN NurseController deleteNurse() delete nurse with id: {}", id);
+        nurseService.delete(id);
     }
 }

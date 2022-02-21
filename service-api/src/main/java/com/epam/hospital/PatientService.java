@@ -11,11 +11,11 @@ public interface PatientService {
 
     List<PatientDto> findAll();
 
-    void create(PatientDto patientDto);
+    PatientDto create(PatientDto patientDto);
 
-    void update(PatientDto patientDto);
+    PatientDto update(PatientDto patientDto, Integer id);
 
-    void delete(PatientDto patientDto);
+    void delete(Integer id);
 
-    Optional<PatientDto> findById(Integer patientId);
+    Optional<PatientDto> findById(Integer id);
 }

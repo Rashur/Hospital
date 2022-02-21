@@ -2,6 +2,7 @@ package com.epam.hospital;
 
 import com.epam.hospital.dto.NurseDto;
 import com.epam.hospital.dto.PatientDto;
+import com.epam.hospital.exception.PatientNotFoundException;
 import com.epam.hospital.mapper.PatientMapper;
 import com.epam.hospital.model.Patient;
 import org.apache.logging.log4j.LogManager;
@@ -38,29 +39,44 @@ public class PatientServiceImpl implements PatientService{
     }
 
     @Override
-    public void create(PatientDto patientDto) {
+    public PatientDto create(PatientDto patientDto) {
         patientDto.setIllnessDate(LocalDate.now());
+        patientDao.save(patientMapper.toEntity(patientDto));
         log.info("IN PatientServiceImpl create() create patient: {}", patientDto);
-        patientDao.create(patientMapper.toEntity(patientDto));
+        return patientDto;
     }
 
     @Override
-    public void update(PatientDto patientDto) {
+    public PatientDto update(PatientDto patientDto, Integer id) {
+        Optional<Patient> searchedPatient = patientDao.findById(id);
+        if (searchedPatient.isEmpty()) {
+            throw new PatientNotFoundException("Patient with id: " + id + " doesn't exist");
+        }
+        patientDto.setId(id);
+        patientDto.setIllnessDate(searchedPatient.get().getIllnessDate());
+        patientDao.save(patientMapper.toEntity(patientDto));
         log.info("IN PatientServiceImpl update() update patient: {}", patientDto);
-        patientDao.update(patientMapper.toEntity(patientDto));
+        return patientDto;
     }
 
     @Override
-    public void delete(PatientDto patientDto) {
-        log.info("IN PatientServiceImpl delete() delete patient: {}", patientDto);
-        Patient patient = patientMapper.toEntity(patientDto);
-        patientDao.delete(patient);
+    public void delete(Integer id) {
+        if (patientDao.findById(id).isEmpty()) {
+            throw new PatientNotFoundException("Patient with id: " + id + " doesn't exist");
+        }
+        log.info("IN PatientServiceImpl delete() delete patient with id: {}", id);
+        patientDao.deleteById(id);
     }
 
     @Override
-    public Optional<PatientDto> findById(Integer patientId) {
-        log.info("IN PatientServiceImpl findById() find patient with id: {}", patientId);
-        PatientDto patientDto = patientMapper.toDto(patientDao.findById(patientId).get());
-        return Optional.ofNullable(patientDto);
+    public Optional<PatientDto> findById(Integer id) {
+        Optional<Patient> searchedPatient = patientDao.findById(id);
+        if (searchedPatient.isPresent()) {
+            PatientDto patientDto = patientMapper.toDto(searchedPatient.get());
+            log.info("IN PatientServiceImpl findById() find patient with id: {}", id);
+            return Optional.ofNullable(patientDto);
+        } else {
+            throw new PatientNotFoundException("Patient with id: " + id + " doesn't exist");
+        }
     }
 }

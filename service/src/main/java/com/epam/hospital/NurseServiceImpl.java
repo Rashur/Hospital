@@ -1,6 +1,7 @@
 package com.epam.hospital;
 
 import com.epam.hospital.dto.NurseDto;
+import com.epam.hospital.exception.NurseNotFoundException;
 import com.epam.hospital.mapper.NurseMapper;
 import com.epam.hospital.model.Nurse;
 import org.apache.logging.log4j.LogManager;
@@ -36,30 +37,43 @@ public class NurseServiceImpl implements NurseService {
     }
 
     @Override
-    public void create(NurseDto nurseDto) {
+    public NurseDto create(NurseDto nurseDto) {
+        Nurse nurse = nurseMapper.toEntity(nurseDto);
+        nurseDao.save(nurse);
         log.info("IN NurseServiceImpl create() nurse: {}", nurseDto);
-        Nurse nurse = nurseMapper.toEntity(nurseDto);
-        nurseDao.create(nurse);
+        return nurseDto;
     }
 
     @Override
-    public void update(NurseDto nurseDto) {
+    public NurseDto update(NurseDto nurseDto, Integer id) {
+        if (nurseDao.findById(id).isEmpty()) {
+            throw new NurseNotFoundException("Nurse with id:" + id + " doesn't exist");
+        }
+        nurseDto.setId(id);
         Nurse nurse = nurseMapper.toEntity(nurseDto);
-        log.info("IN NurseServiceImpl update() update nurse: {} with id: {}", nurseDto, nurseDto.getId());
-        nurseDao.update(nurse);
+        nurseDao.save(nurse);
+        log.info("IN NurseServiceImpl update() update nurse: {} with id: {}", nurseDto, id);
+        return nurseDto;
     }
 
     @Override
-    public void delete(NurseDto nurseDto) {
-        log.info("IN NurseServiceImpl delete() delete nurse: {}", nurseDto);
-        Nurse nurse = nurseMapper.toEntity(nurseDto);
-        nurseDao.delete(nurse);
+    public void delete(Integer id) {
+        if (nurseDao.findById(id).isEmpty()) {
+            throw new NurseNotFoundException("Nurse with id:" + id + " doesn't exist");
+        }
+        log.info("IN NurseServiceImpl delete() delete nurse with id: {}", id);
+        nurseDao.deleteById(id);
     }
 
     @Override
-    public Optional<NurseDto> findById(Integer nurseId) {
-        log.info("IN NurseServiceImpl findById() find nurse with id: {}", nurseId);
-        NurseDto nurseDto = nurseMapper.toDto(nurseDao.findById(nurseId).get());
-        return Optional.ofNullable(nurseDto);
+    public Optional<NurseDto> findById(Integer id) {
+        Optional<Nurse> searchedNurse = nurseDao.findById(id);
+        if (searchedNurse.isPresent()) {
+            NurseDto nurseDto = nurseMapper.toDto(searchedNurse.get());
+            log.info("IN NurseServiceImpl findById() find nurse with id: {}", id);
+            return Optional.ofNullable(nurseDto);
+        } else {
+            throw new NurseNotFoundException("Nurse with id:" + id + " doesn't exist");
+        }
     }
 }
