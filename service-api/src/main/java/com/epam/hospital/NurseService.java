@@ -1,19 +1,21 @@
 package com.epam.hospital;
 
+import com.epam.hospital.dto.NurseDto;
 import com.epam.hospital.model.Nurse;
 
+import java.net.Inet4Address;
 import java.util.List;
 import java.util.Optional;
 
 public interface NurseService {
 
-    List<Nurse> findAll();
+    List<NurseDto> findAll();
 
-    Integer create(Nurse nurse);
+    NurseDto create(NurseDto nurseDto);
 
-    Integer update(Nurse nurse);
+    NurseDto update(NurseDto nurse, Integer id);
 
-    Integer delete(Integer nurseId);
+    void delete(Integer id);
 
-    Optional<Nurse> findById(Integer nurseId);
+    Optional<NurseDto> findById(Integer id);
 }

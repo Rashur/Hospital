@@ -12,10 +12,6 @@
 
     <artifactId>service</artifactId>
 
-    <properties>
-        <maven.compiler.source>15</maven.compiler.source>
-        <maven.compiler.target>15</maven.compiler.target>
-    </properties>
 
     <dependencies>
         <dependency>
@@ -25,10 +21,6 @@
         <dependency>
             <groupId>com.epam.hospital</groupId>
             <artifactId>dao-api</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.epam.hospital</groupId>
-            <artifactId>dao</artifactId>
         </dependency>
         <dependency>
             <groupId>com.epam.hospital</groupId>
