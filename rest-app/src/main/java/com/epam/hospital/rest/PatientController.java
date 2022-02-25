@@ -34,17 +34,17 @@ public class PatientController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(value = "/patients", consumes = "application/json", produces = "application/json")
-    public void createPatient(@RequestBody PatientDto patientDto) {
+    public PatientDto createPatient(@RequestBody PatientDto patientDto) {
         log.info("IN PatientController createPatient() create patient: {}", patientDto);
-        patientService.create(patientDto);
+        return patientService.create(patientDto);
     }
 
     @ResponseStatus(HttpStatus.OK)
     @PutMapping(value = "/patients/{id}", consumes = {"application/json"}, produces = {"application/json"})
-    public void updatePatient(@RequestBody PatientDto patientDto,
+    public PatientDto updatePatient(@RequestBody PatientDto patientDto,
                               @PathVariable Integer id) {
         log.info("IN PatientController updatePatient() update patient: {}", patientDto);
-        patientService.update(patientDto, id);
+        return patientService.update(patientDto, id);
     }
 
     @ResponseStatus(HttpStatus.OK)
@@ -59,6 +59,12 @@ public class PatientController {
     public void deletePatient(@PathVariable Integer id) {
         log.info("IN PatientController deletePatient() delete patient with id: {}", id);
         patientService.delete(id);
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping(value = "/patients/size={size}")
+    public List<PatientDto> patientsByNurseListSize(@PathVariable Long size) {
+        return patientService.allPatientWithNurseListGreaterThan(size);
     }
 
 //    @ResponseStatus(HttpStatus.OK)

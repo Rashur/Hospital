@@ -9,7 +9,10 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -75,5 +78,15 @@ public class NurseServiceImpl implements NurseService {
         } else {
             throw new NurseNotFoundException("Nurse with id:" + id + " doesn't exist");
         }
+    }
+
+    @Override
+    public List<NurseDto> findNursesByPatientsDateRange(Date dateBefore, Date dateAfter) {
+        List<NurseDto> nurseListByPatientsDateRange = new ArrayList<>();
+        for (Nurse nurse : nurseDao.findNursesByPatientsIllnessDateBetween(dateBefore, dateAfter)) {
+            nurseListByPatientsDateRange.add(nurseMapper.toDto(nurse));
+        }
+        log.info("IN NurseServiceImpl findNursesByPatientsDateRange() between date: {} and {}", dateBefore, dateAfter);
+        return nurseListByPatientsDateRange;
     }
 }

@@ -79,4 +79,17 @@ public class PatientServiceImpl implements PatientService{
             throw new PatientNotFoundException("Patient with id: " + id + " doesn't exist");
         }
     }
+
+    @Override
+    public List<PatientDto> allPatientWithNurseListGreaterThan(Long listSize) {
+        if (listSize != null) {
+            List<PatientDto> patientDtoList = new ArrayList<>();
+            for (Patient patient: patientDao.findAllByNurseListCountGreaterThan(listSize)) {
+                patientDtoList.add(patientMapper.toDto(patient));
+            }
+            return patientDtoList;
+        } else {
+            throw new IllegalArgumentException("List size cannot be empty");
+        }
+    }
 }

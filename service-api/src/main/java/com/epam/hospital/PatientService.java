@@ -18,4 +18,6 @@ public interface PatientService {
     void delete(Integer id);
 
     Optional<PatientDto> findById(Integer id);
+
+    List<PatientDto> allPatientWithNurseListGreaterThan(Long listSize);
 }

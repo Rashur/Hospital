@@ -1,6 +1,7 @@
 package com.epam.hospital.rest;
 
 import com.epam.hospital.NurseService;
+import com.epam.hospital.dto.DateRange;
 import com.epam.hospital.dto.NurseDto;
 import com.epam.hospital.model.Nurse;
 import org.apache.logging.log4j.LogManager;
@@ -34,9 +35,9 @@ public class NurseController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(value = "/nurses", consumes = "application/json", produces = "application/json")
-    public void createNurse(@RequestBody NurseDto nurseDto) {
+    public NurseDto createNurse(@RequestBody NurseDto nurseDto) {
         log.info("IN NurseController createNurse() create nurse: {}", nurseDto);
-        nurseService.create(nurseDto);
+        return nurseService.create(nurseDto);
     }
 
     @ResponseStatus(HttpStatus.OK)
@@ -48,10 +49,10 @@ public class NurseController {
 
     @ResponseStatus(HttpStatus.OK)
     @PutMapping(value = "/nurses/{id}", consumes = {"application/json"}, produces = {"application/json"})
-    public void updateNurse(@RequestBody NurseDto nurseDto,
+    public NurseDto updateNurse(@RequestBody NurseDto nurseDto,
                             @PathVariable Integer id) {
         log.info("IN NurseController updateNurse() update nurse: {}", nurseDto);
-        nurseService.update(nurseDto, id);
+        return nurseService.update(nurseDto, id);
     }
 
     @ResponseStatus(HttpStatus.OK)
@@ -59,5 +60,12 @@ public class NurseController {
     public void deleteNurse(@PathVariable Integer id) {
         log.info("IN NurseController deleteNurse() delete nurse with id: {}", id);
         nurseService.delete(id);
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping(value = "/nurses/date-range", consumes = {"application/json"}, produces = {"application/json"})
+    List<NurseDto> nurseByPatientDateRange(@RequestBody DateRange dateRange) {
+        log.info("IN NurseController nurseByPatientDateRange() with date range: {}, {}", dateRange.getDateFrom(), dateRange.getDateTo());
+        return nurseService.findNursesByPatientsDateRange(dateRange.getDateFrom(), dateRange.getDateTo());
     }
 }
