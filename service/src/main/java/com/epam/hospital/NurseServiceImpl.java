@@ -7,14 +7,16 @@ import com.epam.hospital.model.Nurse;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class NurseServiceImpl implements NurseService {
@@ -88,5 +90,13 @@ public class NurseServiceImpl implements NurseService {
         }
         log.info("IN NurseServiceImpl findNursesByPatientsDateRange() between date: {} and {}", dateBefore, dateAfter);
         return nurseListByPatientsDateRange;
+    }
+
+    @Override
+    public Page<NurseDto> findAllWithPagination(Integer offset, Integer pageSize) {
+        Page<Nurse> searchedListByName = nurseDao.findAll(PageRequest.of(offset, pageSize));
+            Page<NurseDto> nurseDtoList = searchedListByName.map(nurseMapper::toDto);
+            log.info("IN NurseServiceImpl findNurseByFirstName() find all nurses per page");
+            return nurseDtoList;
     }
 }

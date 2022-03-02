@@ -9,10 +9,15 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.Index;
+import javax.persistence.criteria.CriteriaBuilder;
 import java.util.List;
 import java.util.Optional;
 
@@ -75,8 +80,16 @@ public class NurseController {
     @ResponseStatus(HttpStatus.OK)
     @GetMapping(value = "/nurses/date-range", consumes = {"application/json"}, produces = {"application/json"})
     @Operation(summary = "Getting nurse if their patients has an illness date between this date range")
-    List<NurseDto> nurseByPatientDateRange(@RequestBody DateRange dateRange) {
+    public List<NurseDto> nurseByPatientDateRange(@RequestBody DateRange dateRange) {
         log.info("IN NurseController nurseByPatientDateRange() with date range: {}, {}", dateRange.getDateFrom(), dateRange.getDateTo());
         return nurseService.findNursesByPatientsDateRange(dateRange.getDateFrom(), dateRange.getDateTo());
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping(value = "/nurses/{offset}/{pageSize}")
+    public Page<NurseDto> nurseByFirstNameAndPageable(@PathVariable Integer offset,
+                                                      @PathVariable Integer pageSize) {
+        log.info("IN NurseController nurseByFirstNameAndPageable() find nurse per page");
+        return nurseService.findAllWithPagination(offset, pageSize);
     }
 }

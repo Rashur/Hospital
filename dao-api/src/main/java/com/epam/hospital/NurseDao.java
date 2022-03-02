@@ -5,7 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -19,5 +18,4 @@ public interface NurseDao extends JpaRepository<Nurse, Integer> {
     List<Nurse> findNursesByPatientsIllnessDateBetween(@Param("dateBefore") Date dateBefore,
                                                        @Param("dateAfter") Date dateAfter);
 
-    List<Nurse> findAllByPatientListIllnessDateBetween(LocalDate dateBefore, LocalDate dateAfter);
 }

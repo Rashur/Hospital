@@ -1,12 +1,10 @@
 package com.epam.hospital;
 
-import com.epam.hospital.model.Nurse;
 import com.epam.hospital.model.Patient;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import javax.persistence.criteria.CriteriaBuilder;
 import java.util.List;
 
 public interface PatientDao extends JpaRepository<Patient, Integer> {
