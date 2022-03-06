@@ -24,4 +24,5 @@ public interface NurseService {
 
     Page<NurseDto> findAllWithPagination(Integer offset, Integer pageSize);
 
+    void createFakeNurse();
 }

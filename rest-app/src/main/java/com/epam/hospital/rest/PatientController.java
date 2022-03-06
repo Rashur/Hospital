@@ -73,10 +73,11 @@ public class PatientController {
         return patientService.allPatientWithNurseListGreaterThan(size);
     }
 
-//    @ResponseStatus(HttpStatus.OK)
-//    @PostMapping(value = "/patients/date-range")
-//    public List<PatientDto> findPatientsInDateRange(@RequestBody DateRange dateRange) {
-//        log.info("IN PatientController deletePatient() find patients in date range from: {} to: {}", dateRange.getDateFrom(), dateRange.getDateTo());
-//        patientService.findAllPatientsInRange(dateRange);
-//    }
+    @ResponseStatus(HttpStatus.OK)
+    @PostMapping(value = "/patients/fake")
+    @Operation(summary = "Creating fake patient")
+    public void createFakePatient() {
+        log.info("IN PatientController createFakePatient() create fake patient");
+        patientService.createFakePatient();
+    }
 }

@@ -1,19 +1,22 @@
 package com.epam.hospital;
 
-import com.epam.hospital.dto.NurseDto;
 import com.epam.hospital.dto.PatientDto;
 import com.epam.hospital.exception.PatientNotFoundException;
 import com.epam.hospital.mapper.PatientMapper;
+import com.epam.hospital.model.Nurse;
 import com.epam.hospital.model.Patient;
+import com.github.javafaker.Faker;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class PatientServiceImpl implements PatientService{
@@ -21,11 +24,13 @@ public class PatientServiceImpl implements PatientService{
     private static final Logger log = LogManager.getLogger(PatientServiceImpl.class);
     private final PatientDao patientDao;
     private final PatientMapper patientMapper;
+    private final NurseDao nurseDao;
 
     @Autowired
-    public PatientServiceImpl(final PatientDao patientDao, PatientMapper patientMapper) {
+    public PatientServiceImpl(final PatientDao patientDao, PatientMapper patientMapper, NurseDao nurseDao) {
         this.patientDao = patientDao;
         this.patientMapper = patientMapper;
+        this.nurseDao = nurseDao;
     }
 
     @Override
@@ -91,5 +96,32 @@ public class PatientServiceImpl implements PatientService{
         } else {
             throw new IllegalArgumentException("List size cannot be empty");
         }
+    }
+
+    @Override
+    public void createFakePatient() {
+        Faker faker = new Faker();
+        Patient patient = new Patient();
+        boolean isEquals = true;
+        patient.setFirstName(faker.name().firstName());
+        patient.setLastName(faker.name().lastName());
+        patient.setDiagnosis(faker.medical().diseaseName());
+        patient.setIllnessDate(faker.date().past(250, TimeUnit.DAYS)
+                .toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate());
+        List<Nurse> listWithAllNurses = nurseDao.findAll();
+        while (isEquals) {
+            Integer firstNurse = faker.random().nextInt(1, listWithAllNurses.size()-1);
+            Integer secondNurse = faker.random().nextInt(1, listWithAllNurses.size()-1);
+            if (!firstNurse.equals(secondNurse)) {
+                List<Nurse> nurseListForSave = new ArrayList<>();
+                nurseListForSave.add(listWithAllNurses.get(firstNurse));
+                nurseListForSave.add(listWithAllNurses.get(secondNurse));
+                patient.setNurseList(nurseListForSave);
+                isEquals = false;
+            }
+        }
+        patientDao.save(patient);
     }
 }

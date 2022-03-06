@@ -17,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.Index;
+import javax.persistence.ValidationMode;
 import javax.persistence.criteria.CriteriaBuilder;
 import java.util.List;
 import java.util.Optional;
@@ -87,9 +88,18 @@ public class NurseController {
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping(value = "/nurses/{offset}/{pageSize}")
+    @Operation(summary = "Get all nurses with pagination")
     public Page<NurseDto> nurseByFirstNameAndPageable(@PathVariable Integer offset,
                                                       @PathVariable Integer pageSize) {
         log.info("IN NurseController nurseByFirstNameAndPageable() find nurse per page");
         return nurseService.findAllWithPagination(offset, pageSize);
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @PostMapping(value = "nurses/fake")
+    @Operation(summary = "Creating fake nurse")
+    public void createFakeNurse() {
+        log.info("IN NurseController createFakeNurse() create fake nurse");
+        nurseService.createFakeNurse();
     }
 }

@@ -4,6 +4,7 @@ import com.epam.hospital.dto.NurseDto;
 import com.epam.hospital.exception.NurseNotFoundException;
 import com.epam.hospital.mapper.NurseMapper;
 import com.epam.hospital.model.Nurse;
+import com.github.javafaker.Faker;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -98,5 +99,15 @@ public class NurseServiceImpl implements NurseService {
             Page<NurseDto> nurseDtoList = searchedListByName.map(nurseMapper::toDto);
             log.info("IN NurseServiceImpl findNurseByFirstName() find all nurses per page");
             return nurseDtoList;
+    }
+
+    @Override
+    public void createFakeNurse() {
+        Faker faker = new Faker();
+        Nurse nurse = new Nurse();
+        nurse.setFirstName(faker.name().firstName());
+        nurse.setLastName(faker.name().lastName());
+        nurseDao.save(nurse);
+        log.info("IN NurseServiceImpl createFakeNurse() create fake nurse");
     }
 }

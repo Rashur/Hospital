@@ -20,4 +20,6 @@ public interface PatientService {
     Optional<PatientDto> findById(Integer id);
 
     List<PatientDto> allPatientWithNurseListGreaterThan(Long listSize);
+
+    void createFakePatient();
 }
