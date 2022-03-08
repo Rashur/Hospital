@@ -14,7 +14,7 @@ import java.util.List;
 public class NurseDto {
 
     @Schema(description = "Identifier", example = "61")
-    private Integer id;
+    private String id;
 
     @Schema(description = "Firstname of nurse", example = "Tatsiana")
     private String firstName;
@@ -23,6 +23,6 @@ public class NurseDto {
     private String lastName;
 
     @Schema(description = "List with attached patient's ids", example = "[1, 3, 4]")
-    private List<Integer> patientIds;
+    private List<String> patientIds;
 
 }

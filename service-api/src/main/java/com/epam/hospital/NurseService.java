@@ -14,15 +14,10 @@ public interface NurseService {
 
     NurseDto create(NurseDto nurseDto);
 
-    NurseDto update(NurseDto nurse, Integer id);
+    NurseDto update(NurseDto nurse, String id);
 
-    void delete(Integer id);
+    void delete(String id);
 
-    Optional<NurseDto> findById(Integer id);
+    NurseDto findById(String id);
 
-    List<NurseDto> findNursesByPatientsDateRange(Date dateBefore, Date dateAfter);
-
-    Page<NurseDto> findAllWithPagination(Integer offset, Integer pageSize);
-
-    void createFakeNurse();
 }

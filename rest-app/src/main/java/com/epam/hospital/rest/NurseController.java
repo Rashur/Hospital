@@ -10,17 +10,11 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.persistence.Index;
-import javax.persistence.ValidationMode;
-import javax.persistence.criteria.CriteriaBuilder;
 import java.util.List;
-import java.util.Optional;
+
 
 @RestController
 @CrossOrigin
@@ -56,16 +50,16 @@ public class NurseController {
     @ResponseStatus(HttpStatus.OK)
     @GetMapping(value = "/nurses/{id}")
     @Operation(summary = "Getting nurse by id")
-    public NurseDto findNurseById(@PathVariable Integer id) {
+    public NurseDto findNurseById(@PathVariable String id) {
         log.info("IN NurseController findNurseById() find nurse with id: {}", id);
-        return nurseService.findById(id).get();
+        return nurseService.findById(id);
     }
 
     @ResponseStatus(HttpStatus.OK)
     @PutMapping(value = "/nurses/{id}", consumes = {"application/json"}, produces = {"application/json"})
     @Operation(summary = "Updating nurse")
     public NurseDto updateNurse(@RequestBody NurseDto nurseDto,
-                            @PathVariable Integer id) {
+                            @PathVariable String id) {
         log.info("IN NurseController updateNurse() update nurse: {}", nurseDto);
         return nurseService.update(nurseDto, id);
     }
@@ -73,33 +67,9 @@ public class NurseController {
     @ResponseStatus(HttpStatus.OK)
     @DeleteMapping(value = "/nurses/{id}", produces = {"application/json"})
     @Operation(summary = "Deleting nurse by id")
-    public void deleteNurse(@PathVariable Integer id) {
+    public void deleteNurse(@PathVariable String id) {
         log.info("IN NurseController deleteNurse() delete nurse with id: {}", id);
         nurseService.delete(id);
     }
 
-    @ResponseStatus(HttpStatus.OK)
-    @GetMapping(value = "/nurses/date-range", consumes = {"application/json"}, produces = {"application/json"})
-    @Operation(summary = "Getting nurse if their patients has an illness date between this date range")
-    public List<NurseDto> nurseByPatientDateRange(@RequestBody DateRange dateRange) {
-        log.info("IN NurseController nurseByPatientDateRange() with date range: {}, {}", dateRange.getDateFrom(), dateRange.getDateTo());
-        return nurseService.findNursesByPatientsDateRange(dateRange.getDateFrom(), dateRange.getDateTo());
-    }
-
-    @ResponseStatus(HttpStatus.OK)
-    @GetMapping(value = "/nurses/{offset}/{pageSize}")
-    @Operation(summary = "Get all nurses with pagination")
-    public Page<NurseDto> nurseByFirstNameAndPageable(@PathVariable Integer offset,
-                                                      @PathVariable Integer pageSize) {
-        log.info("IN NurseController nurseByFirstNameAndPageable() find nurse per page");
-        return nurseService.findAllWithPagination(offset, pageSize);
-    }
-
-    @ResponseStatus(HttpStatus.OK)
-    @PostMapping(value = "nurses/fake")
-    @Operation(summary = "Creating fake nurse")
-    public void createFakeNurse() {
-        log.info("IN NurseController createFakeNurse() create fake nurse");
-        nurseService.createFakeNurse();
-    }
 }

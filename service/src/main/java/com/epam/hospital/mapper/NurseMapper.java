@@ -42,10 +42,10 @@ public class NurseMapper {
         return nurse;
     }
 
-    private List<Patient> convertAllPatients(List<Integer> listId) {
+    private List<Patient> convertAllPatients(List<String> listId) {
         List<Patient> patientList = new ArrayList<>();
-        for (Integer id: listId) {
-            patientList.add(patientDao.findById(id).get());
+        for (String id: listId) {
+            patientList.add(patientDao.findById(id));
         }
         return patientList;
     }

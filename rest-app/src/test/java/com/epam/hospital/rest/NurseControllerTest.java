@@ -106,7 +106,7 @@ class NurseControllerTest {
         assertNotNull(returnedId);
         assertEquals(nurse.getId(), returnedId);
 
-        Mockito.when(nurseService.findById(returnedId)).thenReturn(Optional.of(nurse));
+        //Mockito.when(nurseService.findById(returnedId)).thenReturn(Optional.of(nurse));
         MockHttpServletResponse findResponse = mockMvc.perform(MockMvcRequestBuilders.get("/nurses/" + returnedId)
         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())

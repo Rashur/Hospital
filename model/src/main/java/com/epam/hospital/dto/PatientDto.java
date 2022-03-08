@@ -7,7 +7,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.persistence.JoinColumn;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
@@ -19,7 +18,7 @@ import java.util.Objects;
 public class PatientDto {
 
     @Schema(description = "Identifier", example = "512")
-    private Integer id;
+    private String id;
 
     @Schema(description = "Firstname of patient", example = "Ivan")
     private String firstName;
@@ -36,6 +35,6 @@ public class PatientDto {
     private LocalDate illnessDate;
 
     @Schema(description = "List with attached nurse's ids", example = "[2,3]")
-    private List<Integer> nurseIds;
+    private List<String> nurseIds;
 
 }

@@ -45,7 +45,7 @@ public class PatientController {
     @PutMapping(value = "/patients/{id}", consumes = {"application/json"}, produces = {"application/json"})
     @Operation(summary = "Updating patient")
     public PatientDto updatePatient(@RequestBody PatientDto patientDto,
-                              @PathVariable Integer id) {
+                              @PathVariable String id) {
         log.info("IN PatientController updatePatient() update patient: {}", patientDto);
         return patientService.update(patientDto, id);
     }
@@ -53,31 +53,17 @@ public class PatientController {
     @ResponseStatus(HttpStatus.OK)
     @GetMapping(value = "/patients/{id}")
     @Operation(summary = "Getting patient by id")
-    public PatientDto findPatientById(@PathVariable Integer id) {
+    public PatientDto findPatientById(@PathVariable String id) {
         log.info("IN PatientController findPatientById() find patient with id: {}", id);
-        return patientService.findById(id).get();
+        return patientService.findById(id);
     }
 
     @ResponseStatus(HttpStatus.OK)
     @DeleteMapping(value = "/patients/{id}", produces = {"application/json"})
     @Operation(summary = "Deleting patient by id")
-    public void deletePatient(@PathVariable Integer id) {
+    public void deletePatient(@PathVariable String id) {
         log.info("IN PatientController deletePatient() delete patient with id: {}", id);
         patientService.delete(id);
     }
 
-    @ResponseStatus(HttpStatus.OK)
-    @GetMapping(value = "/patients/size={size}")
-    @Operation(summary = "Getting patients if they have more nurse than given")
-    public List<PatientDto> patientsByNurseListSize(@PathVariable Long size) {
-        return patientService.allPatientWithNurseListGreaterThan(size);
-    }
-
-    @ResponseStatus(HttpStatus.OK)
-    @PostMapping(value = "/patients/fake")
-    @Operation(summary = "Creating fake patient")
-    public void createFakePatient() {
-        log.info("IN PatientController createFakePatient() create fake patient");
-        patientService.createFakePatient();
-    }
 }

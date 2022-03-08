@@ -51,10 +51,7 @@ public class NurseServiceImpl implements NurseService {
     }
 
     @Override
-    public NurseDto update(NurseDto nurseDto, Integer id) {
-        if (nurseDao.findById(id).isEmpty()) {
-            throw new NurseNotFoundException("Nurse with id:" + id + " doesn't exist");
-        }
+    public NurseDto update(NurseDto nurseDto, String id) {
         nurseDto.setId(id);
         Nurse nurse = nurseMapper.toEntity(nurseDto);
         nurseDao.save(nurse);
@@ -63,8 +60,8 @@ public class NurseServiceImpl implements NurseService {
     }
 
     @Override
-    public void delete(Integer id) {
-        if (nurseDao.findById(id).isEmpty()) {
+    public void delete(String id) {
+        if (nurseDao.findById(id) == null) {
             throw new NurseNotFoundException("Nurse with id:" + id + " doesn't exist");
         }
         log.info("IN NurseServiceImpl delete() delete nurse with id: {}", id);
@@ -72,42 +69,15 @@ public class NurseServiceImpl implements NurseService {
     }
 
     @Override
-    public Optional<NurseDto> findById(Integer id) {
-        Optional<Nurse> searchedNurse = nurseDao.findById(id);
-        if (searchedNurse.isPresent()) {
-            NurseDto nurseDto = nurseMapper.toDto(searchedNurse.get());
+    public NurseDto findById(String id) {
+        Nurse searchedNurse = nurseDao.findById(id);
+        if (searchedNurse != null) {
+            NurseDto nurseDto = nurseMapper.toDto(searchedNurse);
             log.info("IN NurseServiceImpl findById() find nurse with id: {}", id);
-            return Optional.ofNullable(nurseDto);
+            return nurseDto;
         } else {
             throw new NurseNotFoundException("Nurse with id:" + id + " doesn't exist");
         }
     }
 
-    @Override
-    public List<NurseDto> findNursesByPatientsDateRange(Date dateBefore, Date dateAfter) {
-        List<NurseDto> nurseListByPatientsDateRange = new ArrayList<>();
-        for (Nurse nurse : nurseDao.findNursesByPatientsIllnessDateBetween(dateBefore, dateAfter)) {
-            nurseListByPatientsDateRange.add(nurseMapper.toDto(nurse));
-        }
-        log.info("IN NurseServiceImpl findNursesByPatientsDateRange() between date: {} and {}", dateBefore, dateAfter);
-        return nurseListByPatientsDateRange;
-    }
-
-    @Override
-    public Page<NurseDto> findAllWithPagination(Integer offset, Integer pageSize) {
-        Page<Nurse> searchedListByName = nurseDao.findAll(PageRequest.of(offset, pageSize));
-            Page<NurseDto> nurseDtoList = searchedListByName.map(nurseMapper::toDto);
-            log.info("IN NurseServiceImpl findNurseByFirstName() find all nurses per page");
-            return nurseDtoList;
-    }
-
-    @Override
-    public void createFakeNurse() {
-        Faker faker = new Faker();
-        Nurse nurse = new Nurse();
-        nurse.setFirstName(faker.name().firstName());
-        nurse.setLastName(faker.name().lastName());
-        nurseDao.save(nurse);
-        log.info("IN NurseServiceImpl createFakeNurse() create fake nurse");
-    }
 }

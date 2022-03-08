@@ -45,10 +45,10 @@ public class PatientMapper {
         return patient;
     }
 
-    private List<Nurse> convertAllNurses(List<Integer> listIds) {
+    private List<Nurse> convertAllNurses(List<String> listIds) {
         List<Nurse> nurseList = new ArrayList<>();
-        for (Integer id : listIds) {
-            nurseList.add(nurseDao.findById(id).get());
+        for (String id : listIds) {
+            nurseList.add(nurseDao.findById(id));
         }
         return nurseList;
     }

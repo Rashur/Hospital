@@ -13,13 +13,9 @@ public interface PatientService {
 
     PatientDto create(PatientDto patientDto);
 
-    PatientDto update(PatientDto patientDto, Integer id);
+    PatientDto update(PatientDto patientDto, String id);
 
-    void delete(Integer id);
+    void delete(String id);
 
-    Optional<PatientDto> findById(Integer id);
-
-    List<PatientDto> allPatientWithNurseListGreaterThan(Long listSize);
-
-    void createFakePatient();
+    PatientDto findById(String id);
 }

@@ -52,21 +52,18 @@ public class PatientServiceImpl implements PatientService{
     }
 
     @Override
-    public PatientDto update(PatientDto patientDto, Integer id) {
-        Optional<Patient> searchedPatient = patientDao.findById(id);
-        if (searchedPatient.isEmpty()) {
-            throw new PatientNotFoundException("Patient with id: " + id + " doesn't exist");
-        }
+    public PatientDto update(PatientDto patientDto, String id) {
+        Patient searchedPatient = patientDao.findById(id);
         patientDto.setId(id);
-        patientDto.setIllnessDate(searchedPatient.get().getIllnessDate());
+        patientDto.setIllnessDate(searchedPatient.getIllnessDate());
         patientDao.save(patientMapper.toEntity(patientDto));
         log.info("IN PatientServiceImpl update() update patient: {}", patientDto);
         return patientDto;
     }
 
     @Override
-    public void delete(Integer id) {
-        if (patientDao.findById(id).isEmpty()) {
+    public void delete(String id) {
+        if (patientDao.findById(id) == null ) {
             throw new PatientNotFoundException("Patient with id: " + id + " doesn't exist");
         }
         log.info("IN PatientServiceImpl delete() delete patient with id: {}", id);
@@ -74,54 +71,14 @@ public class PatientServiceImpl implements PatientService{
     }
 
     @Override
-    public Optional<PatientDto> findById(Integer id) {
-        Optional<Patient> searchedPatient = patientDao.findById(id);
-        if (searchedPatient.isPresent()) {
-            PatientDto patientDto = patientMapper.toDto(searchedPatient.get());
+    public PatientDto findById(String id) {
+        Patient searchedPatient = patientDao.findById(id);
+        if (searchedPatient != null) {
+            PatientDto patientDto = patientMapper.toDto(searchedPatient);
             log.info("IN PatientServiceImpl findById() find patient with id: {}", id);
-            return Optional.ofNullable(patientDto);
+            return patientDto;
         } else {
             throw new PatientNotFoundException("Patient with id: " + id + " doesn't exist");
         }
-    }
-
-    @Override
-    public List<PatientDto> allPatientWithNurseListGreaterThan(Long listSize) {
-        if (listSize != null) {
-            List<PatientDto> patientDtoList = new ArrayList<>();
-            for (Patient patient: patientDao.findAllByNurseListCountGreaterThan(listSize)) {
-                patientDtoList.add(patientMapper.toDto(patient));
-            }
-            return patientDtoList;
-        } else {
-            throw new IllegalArgumentException("List size cannot be empty");
-        }
-    }
-
-    @Override
-    public void createFakePatient() {
-        Faker faker = new Faker();
-        Patient patient = new Patient();
-        boolean isEquals = true;
-        patient.setFirstName(faker.name().firstName());
-        patient.setLastName(faker.name().lastName());
-        patient.setDiagnosis(faker.medical().diseaseName());
-        patient.setIllnessDate(faker.date().past(250, TimeUnit.DAYS)
-                .toInstant()
-                .atZone(ZoneId.systemDefault())
-                .toLocalDate());
-        List<Nurse> listWithAllNurses = nurseDao.findAll();
-        while (isEquals) {
-            Integer firstNurse = faker.random().nextInt(1, listWithAllNurses.size()-1);
-            Integer secondNurse = faker.random().nextInt(1, listWithAllNurses.size()-1);
-            if (!firstNurse.equals(secondNurse)) {
-                List<Nurse> nurseListForSave = new ArrayList<>();
-                nurseListForSave.add(listWithAllNurses.get(firstNurse));
-                nurseListForSave.add(listWithAllNurses.get(secondNurse));
-                patient.setNurseList(nurseListForSave);
-                isEquals = false;
-            }
-        }
-        patientDao.save(patient);
     }
 }
