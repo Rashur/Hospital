@@ -34,13 +34,9 @@ public class PatientServiceImpl implements PatientService{
     }
 
     @Override
-    public List<PatientDto> findAll() {
+    public List<Patient> findAll() {
         log.info("IN PatientServiceImpl getAll()");
-        List<PatientDto> patientDtoList = new ArrayList<>();
-        for (Patient patient : patientDao.findAll()) {
-            patientDtoList.add(patientMapper.toDto(patient));
-        }
-        return patientDtoList;
+        return patientDao.findAll();
     }
 
     @Override
@@ -74,12 +70,11 @@ public class PatientServiceImpl implements PatientService{
     }
 
     @Override
-    public Optional<PatientDto> findById(Integer id) {
+    public Optional<Patient> findById(Integer id) {
         Optional<Patient> searchedPatient = patientDao.findById(id);
         if (searchedPatient.isPresent()) {
-            PatientDto patientDto = patientMapper.toDto(searchedPatient.get());
             log.info("IN PatientServiceImpl findById() find patient with id: {}", id);
-            return Optional.ofNullable(patientDto);
+            return searchedPatient;
         } else {
             throw new PatientNotFoundException("Patient with id: " + id + " doesn't exist");
         }

@@ -40,7 +40,7 @@ public class NurseController {
     @ResponseStatus(HttpStatus.OK)
     @GetMapping(value = "/nurses")
     @Operation(summary = "Get all nurses")
-    public List<NurseDto> allNurses() {
+    public List<Nurse> allNurses() {
         log.info("IN NurseController allNurses() find all nurses");
         return nurseService.findAll();
     }
@@ -56,18 +56,18 @@ public class NurseController {
     @ResponseStatus(HttpStatus.OK)
     @GetMapping(value = "/nurses/{id}")
     @Operation(summary = "Getting nurse by id")
-    public NurseDto findNurseById(@PathVariable Integer id) {
-        log.info("IN NurseController findNurseById() find nurse with id: {}", id);
+    public Nurse findNurseById(@PathVariable Integer id) {
+        log.info("IN NurseController findNurseById() find nurse with id: {}", nurseService.findById(id).get());
         return nurseService.findById(id).get();
     }
 
     @ResponseStatus(HttpStatus.OK)
     @PutMapping(value = "/nurses/{id}", consumes = {"application/json"}, produces = {"application/json"})
     @Operation(summary = "Updating nurse")
-    public NurseDto updateNurse(@RequestBody NurseDto nurseDto,
+    public Nurse updateNurse(@RequestBody Nurse nurse,
                             @PathVariable Integer id) {
-        log.info("IN NurseController updateNurse() update nurse: {}", nurseDto);
-        return nurseService.update(nurseDto, id);
+        log.info("IN NurseController updateNurse() update nurse: {}", nurse);
+        return nurseService.update(nurse, id);
     }
 
     @ResponseStatus(HttpStatus.OK)

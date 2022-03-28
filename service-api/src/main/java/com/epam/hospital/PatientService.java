@@ -9,7 +9,7 @@ import java.util.Optional;
 
 public interface PatientService {
 
-    List<PatientDto> findAll();
+    List<Patient> findAll();
 
     PatientDto create(PatientDto patientDto);
 
@@ -17,7 +17,7 @@ public interface PatientService {
 
     void delete(Integer id);
 
-    Optional<PatientDto> findById(Integer id);
+    Optional<Patient> findById(Integer id);
 
     List<PatientDto> allPatientWithNurseListGreaterThan(Long listSize);
 

@@ -33,13 +33,9 @@ public class NurseServiceImpl implements NurseService {
     }
 
     @Override
-    public List<NurseDto> findAll() {
+    public List<Nurse> findAll() {
         log.info("IN NurseServiceImpl findAll()");
-        List<NurseDto> nurseDtoList = new ArrayList<>();
-        for (Nurse nurse : nurseDao.findAll()) {
-            nurseDtoList.add(nurseMapper.toDto(nurse));
-        }
-        return nurseDtoList;
+        return nurseDao.findAll();
     }
 
     @Override
@@ -51,15 +47,16 @@ public class NurseServiceImpl implements NurseService {
     }
 
     @Override
-    public NurseDto update(NurseDto nurseDto, Integer id) {
-        if (nurseDao.findById(id).isEmpty()) {
+    public Nurse update(Nurse nurse, Integer id) {
+        Optional<Nurse> searchedNurse = nurseDao.findById(id);
+        if (searchedNurse.isEmpty()) {
             throw new NurseNotFoundException("Nurse with id:" + id + " doesn't exist");
         }
-        nurseDto.setId(id);
-        Nurse nurse = nurseMapper.toEntity(nurseDto);
+        nurse.setId(id);
+        nurse.setPatientList(searchedNurse.get().getPatientList());
         nurseDao.save(nurse);
-        log.info("IN NurseServiceImpl update() update nurse: {} with id: {}", nurseDto, id);
-        return nurseDto;
+        log.info("IN NurseServiceImpl update() update nurse: {} with id: {}", nurse, id);
+        return nurse;
     }
 
     @Override
@@ -72,12 +69,11 @@ public class NurseServiceImpl implements NurseService {
     }
 
     @Override
-    public Optional<NurseDto> findById(Integer id) {
+    public Optional<Nurse> findById(Integer id) {
         Optional<Nurse> searchedNurse = nurseDao.findById(id);
         if (searchedNurse.isPresent()) {
-            NurseDto nurseDto = nurseMapper.toDto(searchedNurse.get());
-            log.info("IN NurseServiceImpl findById() find nurse with id: {}", id);
-            return Optional.ofNullable(nurseDto);
+            log.info("IN NurseServiceImpl findById() find nurse with id: {}", searchedNurse.get());
+            return searchedNurse;
         } else {
             throw new NurseNotFoundException("Nurse with id:" + id + " doesn't exist");
         }

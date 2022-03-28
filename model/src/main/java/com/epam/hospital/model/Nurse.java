@@ -1,5 +1,6 @@
 package com.epam.hospital.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -32,6 +33,7 @@ public class Nurse {
     private String lastName;
 
     @ManyToMany(mappedBy = "nurseList", fetch = FetchType.EAGER)
+    @JsonIgnore
     private List<Patient> patientList;
 
 }
