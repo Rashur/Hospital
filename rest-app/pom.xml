@@ -74,7 +74,8 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <mainClass>com.epam.hospital.RestApplication</mainClass>
+                    <fork>true</fork>
+                    <skip>false</skip>
                 </configuration>
                 <executions>
                     <execution>
