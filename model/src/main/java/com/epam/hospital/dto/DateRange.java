@@ -1,63 +1,29 @@
 package com.epam.hospital.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 import java.util.Objects;
 
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Schema(description = "Date range")
 public class DateRange {
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @JsonFormat(pattern = "yyyy-MM-dd")
+    @Schema(description = "Date from", example = "2021-10-24")
     private Date dateFrom;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @JsonFormat(pattern = "yyyy-MM-dd")
+    @Schema(description = "Date to", example = "2022-01-10")
     private Date dateTo;
 
-    public DateRange() {
-    }
-
-    public DateRange(Date dateFrom, Date dateTo) {
-        this.dateFrom = dateFrom;
-        this.dateTo = dateTo;
-    }
-
-    public Date getDateFrom() {
-        return dateFrom;
-    }
-
-    public void setDateFrom(Date dateFrom) {
-        this.dateFrom = dateFrom;
-    }
-
-    public Date getDateTo() {
-        return dateTo;
-    }
-
-    public void setDateTo(Date dateTo) {
-        this.dateTo = dateTo;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        DateRange dateRange = (DateRange) o;
-        return Objects.equals(dateFrom, dateRange.dateFrom) && Objects.equals(dateTo, dateRange.dateTo);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(dateFrom, dateTo);
-    }
-
-    @Override
-    public String toString() {
-        return "DateRange{" +
-                "dateFrom=" + dateFrom +
-                ", dateTo=" + dateTo +
-                '}';
-    }
 }

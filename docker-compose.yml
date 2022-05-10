@@ -1,0 +1,9 @@
+version: "2.2"
+
+services:
+  rest-app:
+    build: ./rest-app
+    image: hospital-rest-app
+    container_name: rest-app
+    ports:
+      - "8088:8088"

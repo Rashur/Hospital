@@ -1,6 +1,7 @@
 package com.epam.hospital.rest;
 
 import com.epam.hospital.NurseService;
+import com.epam.hospital.dto.NurseDto;
 import com.epam.hospital.model.Nurse;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -53,7 +54,7 @@ class NurseControllerTest {
     @Test
     void allNurses() throws Exception {
         log.info("Execute test IN NurseControllerTest allNurses()");
-        Mockito.when(nurseService.findAll()).thenReturn(Arrays.asList(create(1), create(2)));
+        //Mockito.when(nurseService.findAll()).thenReturn(Arrays.asList(create(1), create(2)));
 
         mockMvc.perform(MockMvcRequestBuilders.get("/nurses"))
                 .andDo(MockMvcResultHandlers.print())
@@ -71,8 +72,8 @@ class NurseControllerTest {
     @Test
     void createNurse() throws Exception {
         log.info("Execute test IN NurseControllerTest createNurse()");
-        Nurse nurse = create(0);
-        Mockito.when(nurseService.create(nurse)).thenReturn(0);
+        NurseDto nurse = create(0);
+        //Mockito.when(nurseService.create(nurse)).thenReturn(0);
         MockHttpServletResponse response = mockMvc.perform(MockMvcRequestBuilders.post("/nurses")
                 .content(objectMapper.writeValueAsString(nurse))
                 .accept(MediaType.APPLICATION_JSON)
@@ -91,8 +92,8 @@ class NurseControllerTest {
     @Test
     void findNurseById() throws Exception {
         log.info("Execute test IN NurseControllerTest findNurseById()");
-        Nurse nurse = create(0);
-        Mockito.when(nurseService.create(nurse)).thenReturn(0);
+        NurseDto nurse = create(0);
+      //  Mockito.when(nurseService.create(nurse)).thenReturn(0);
         MockHttpServletResponse response = mockMvc.perform(MockMvcRequestBuilders.post("/nurses")
                 .content(objectMapper.writeValueAsString(nurse))
                 .accept(MediaType.APPLICATION_JSON)
@@ -105,7 +106,6 @@ class NurseControllerTest {
         assertNotNull(returnedId);
         assertEquals(nurse.getId(), returnedId);
 
-        Mockito.when(nurseService.findById(returnedId)).thenReturn(Optional.of(nurse));
         MockHttpServletResponse findResponse = mockMvc.perform(MockMvcRequestBuilders.get("/nurses/" + returnedId)
         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
@@ -118,8 +118,8 @@ class NurseControllerTest {
     @Test
     void updateNurse() throws Exception {
         log.info("Execute test IN NurseControllerTest updateNurse()");
-        Nurse nurse = create(0);
-        Mockito.when(nurseService.create(nurse)).thenReturn(0);
+        NurseDto nurse = create(0);
+       // Mockito.when(nurseService.create(nurse)).thenReturn(0);
         MockHttpServletResponse response = mockMvc.perform(MockMvcRequestBuilders.post("/nurses")
                 .content(objectMapper.writeValueAsString(nurse))
                 .accept(MediaType.APPLICATION_JSON)
@@ -134,7 +134,7 @@ class NurseControllerTest {
 
         nurse.setFirstName("qwe");
 
-        Mockito.when(nurseService.update(nurse)).thenReturn(0);
+     //   Mockito.when(nurseService.update(nurse)).thenReturn(0);
 
         MockHttpServletResponse updateResponse = mockMvc.perform(MockMvcRequestBuilders.put("/nurses")
         .contentType(MediaType.APPLICATION_JSON)
@@ -151,8 +151,8 @@ class NurseControllerTest {
     @Test
     void deleteNurse() throws Exception {
         log.info("Execute test IN NurseControllerTest deleteNurse()");
-        Nurse nurse = create(0);
-        Mockito.when(nurseService.create(nurse)).thenReturn(0);
+        NurseDto nurse = create(0);
+      //  Mockito.when(nurseService.create(nurse)).thenReturn(0);
         MockHttpServletResponse response = mockMvc.perform(MockMvcRequestBuilders.post("/nurses")
                 .content(objectMapper.writeValueAsString(nurse))
                 .accept(MediaType.APPLICATION_JSON)
@@ -165,7 +165,7 @@ class NurseControllerTest {
         assertNotNull(returnedId);
         assertEquals(nurse.getId(), returnedId);
 
-        Mockito.when(nurseService.delete(returnedId)).thenReturn(0);
+       // Mockito.when(nurseService.delete(returnedId)).thenReturn(0);
         MockHttpServletResponse deleteResponse = mockMvc.perform(MockMvcRequestBuilders.delete("/nurses/" + returnedId)
         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
@@ -176,7 +176,7 @@ class NurseControllerTest {
         assertEquals(returnedId, deletedId);
     }
 
-    private Nurse create(Integer index) {
-        return new Nurse(index, "firstName" + index, "lastName" + index);
+    private NurseDto create(Integer index) {
+        return new NurseDto();
     }
 }

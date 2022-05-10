@@ -1,5 +1,6 @@
 package com.epam.hospital;
 
+import com.epam.hospital.dto.PatientDto;
 import com.epam.hospital.model.Nurse;
 import com.epam.hospital.model.Patient;
 
@@ -10,11 +11,15 @@ public interface PatientService {
 
     List<Patient> findAll();
 
-    Integer create(Patient patient);
+    PatientDto create(PatientDto patientDto);
 
-    Integer update(Patient patient);
+    PatientDto update(PatientDto patientDto, Integer id);
 
-    Integer delete(Integer patientId);
+    void delete(Integer id);
 
-    Optional<Patient> findById(Integer patientId);
+    Optional<Patient> findById(Integer id);
+
+    List<PatientDto> allPatientWithNurseListGreaterThan(Long listSize);
+
+    void createFakePatient();
 }
